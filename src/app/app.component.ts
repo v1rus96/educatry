@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 
 import { AccountService } from './_services';
-import { User } from './_models';
+import { Role, User } from './_models';
 
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent {
@@ -9,6 +9,14 @@ export class AppComponent {
 
     constructor(private accountService: AccountService) {
         this.accountService.user.subscribe(x => this.user = x);
+    }
+
+    get isAdmin() {
+        return this.user && this.user.role === Role.Admin;
+    }
+
+    get isSuperAdmin() {
+        return this.user && this.user.role === Role.SuperAdmin;
     }
 
     logout() {

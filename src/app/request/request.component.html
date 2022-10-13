@@ -1,0 +1,90 @@
+﻿<h1>Requests</h1>
+<div *ngFor="let school of schools">
+    <h3>{{ school.name }}</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 10%">Request ID</th>
+                <th style="width: 15%">Date</th>
+                <th style="width: 15%">Time</th>
+                <th style="width: 20%">Student Level</th>
+                <th style="width: 10%">#</th>
+                <th style="width: 15%">Status</th>
+                <th style="width: 15%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let request of school.requests">
+                <td>{{request.requestID}}</td>
+                <td>{{request.date}}</td>
+                <td>{{request.time}}</td>
+                <td>{{request.studentLevel}}</td>
+                <td>{{request.numberOfStudents}}</td>
+                <td>{{request.status}}</td>
+                <td><a routerLink="request/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a></td>
+            </tr>
+            <tr *ngIf="!schools">
+                <td colspan="4" class="text-center">
+                    <span class="spinner-border spinner-border-lg align-center"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    
+</div>
+
+
+<c-accordion [alwaysOpen]="true">
+    <c-accordion-item #item0="cAccordionItem" [visible]="false">
+      <ng-template cTemplateId="accordionHeaderTemplate">
+        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+          Accordion item #0
+        </button>
+      </ng-template>
+      <ng-template cTemplateId="accordionBodyTemplate">
+        <div class="accordion-body">
+          <strong>This is the first item's accordion body.</strong> It is hidden by default,
+          until the collapse plugin adds the appropriate classes that we use to style each
+          element. These classes control the overall appearance, as well as the showing and
+          hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+          our default variables. It's also worth noting that just about any HTML can go within
+          the <code>.accordion-body</code>, though the transition does limit overflow.
+        </div>
+      </ng-template>
+    </c-accordion-item>
+    <c-accordion-item #item1="cAccordionItem" [visible]="false">
+      <ng-template cTemplateId="accordionHeaderTemplate">
+        <button (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
+          Accordion item #1
+        </button>
+      </ng-template>
+      <ng-template cTemplateId="accordionBodyTemplate">
+        <div class="accordion-body">
+          <strong>This is the second item's accordion body.</strong> It is hidden by default,
+          until the collapse plugin adds the appropriate classes that we use to style each
+          element. These classes control the overall appearance, as well as the showing and
+          hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+          our default variables. It's also worth noting that just about any HTML can go within
+          the <code>.accordion-body</code>, though the transition does limit overflow.
+        </div>
+      </ng-template>
+    </c-accordion-item>
+    <c-accordion-item #item2="cAccordionItem" [visible]="false">
+      <ng-template cTemplateId="accordionHeaderTemplate">
+        <button (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
+          Accordion item #2
+        </button>
+      </ng-template>
+      <ng-template cTemplateId="accordionBodyTemplate">
+        <div class="accordion-body">
+          <strong>This is the third item's accordion body.</strong> It is hidden by default,
+          until the collapse plugin adds the appropriate classes that we use to style each
+          element. These classes control the overall appearance, as well as the showing and
+          hiding via CSS transitions. You can modify any of this with custom CSS or overriding
+          our default variables. It's also worth noting that just about any HTML can go within
+          the <code>.accordion-body</code>, though the transition does limit overflow.
+        </div>
+      </ng-template>
+    </c-accordion-item>
+  </c-accordion>

@@ -1,0 +1,78 @@
+﻿<h1>Users</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 25%">First Name</th>
+            <th style="width: 25%">Last Name</th>
+            <th style="width: 25%">Username</th>
+            <th style="width: 15%">Requests</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let school of schools">
+            <td>{{school.name}}</td>
+            <td>{{school.address}}</td>
+            <td>{{school.city}}</td>
+            <td>
+                <ul *ngFor="let admin of school.admins">
+                    <li>{{admin.username}}</li>
+                </ul>
+            </td>
+            <td style="white-space: nowrap">
+                <a routerLink="admin/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <!-- <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="school.isDeleting">
+                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!user.isDeleting">Delete</span>
+                </button> -->
+            </td>
+        </tr>
+        <tr *ngIf="!schools">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h1>Users</h1>
+<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 25%">First Name</th>
+            <th style="width: 25%">Last Name</th>
+            <th style="width: 25%">Username</th>
+            <th style="width: 15%">Requests</th>
+            <th style="width: 10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let school of schools">
+            <td>{{school.name}}</td>
+            <td>{{school.address}}</td>
+            <td><a routerLink="request/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a></td>
+            <td>
+                <ul *ngFor="let request of school.requests">
+                    <li>
+                        {{request.requestID}}
+                        <a routerLink="{{school.schoolID}}/request/{{request.requestID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                    </li>
+                </ul>
+            </td>
+            <td style="white-space: nowrap">
+                <a routerLink="request/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
+                <!-- <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="school.isDeleting">
+                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
+                    <span *ngIf="!user.isDeleting">Delete</span>
+                </button> -->
+            </td>
+        </tr>
+        <tr *ngIf="!schools">
+            <td colspan="4" class="text-center">
+                <span class="spinner-border spinner-border-lg align-center"></span>
+            </td>
+        </tr>
+    </tbody>
+</table>

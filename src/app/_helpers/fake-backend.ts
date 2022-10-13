@@ -2,10 +2,17 @@
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, materialize, dematerialize } from 'rxjs/operators';
+import { Role } from '@app/_models';
 
 // array in local storage for registered users
 const usersKey = 'angular-10-registration-login-example-users';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
+users.push({ id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.SuperAdmin });
+
+//array in local storage for schools
+const schoolsKey = 'angular-10-registration-login-example-schools';
+let schools = JSON.parse(localStorage.getItem(schoolsKey)) || [];
+schools.push({ schoolID: 1, name: 'School 1', address: 'Address 1', city: 'City 1', admins: [], requests: [] });
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -22,12 +29,32 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
+                //get current user
+                case url.endsWith('/users/current') && method === 'GET':
+                    return currentUser();
                 case url.match(/\/users\/\d+$/) && method === 'GET':
                     return getUserById();
                 case url.match(/\/users\/\d+$/) && method === 'PUT':
                     return updateUser();
                 case url.match(/\/users\/\d+$/) && method === 'DELETE':
                     return deleteUser();
+                case url.endsWith('/schools') && method === 'GET':
+                    return getSchools();
+                case url.endsWith('/schools/add') && method === 'POST':
+                    return addSchool();
+                case url.match(/\/schools\/\d+$/) && method === 'GET':
+                    return getSchoolById();
+                case url.match(/\/schools\/request\/\d+$/) && method === 'POST':
+                    return addRequest();
+                //add admin to school
+                case url.match(/\/schools\/admin\/\d+$/) && method === 'POST':
+                    return addAdmin();
+                //add offer to request as schools/:schoolID/request/:requestID/offer
+                case url.match(/\/schools\/\d+\/request\/\d+\/offer$/) && method === 'POST':
+                    return addOffer();
+                //get request by id as schools/:schoolID/request/:requestID
+                case url.match(/\/schools\/\d+\/request\/\d+$/) && method === 'GET':
+                    return getRequestById();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -42,7 +69,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!user) return error('Username or password is incorrect');
             return ok({
                 ...basicDetails(user),
-                token: 'fake-jwt-token'
+                token: `fake-jwt-token.${user.id}`
             })
         }
 
@@ -52,6 +79,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (users.find(x => x.username === user.username)) {
                 return error('Username "' + user.username + '" is already taken')
             }
+
+            user.role = Role.User;
+            user.offers = [];   
 
             user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
             users.push(user);
@@ -115,17 +145,126 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function basicDetails(user) {
-            const { id, username, firstName, lastName } = user;
-            return { id, username, firstName, lastName };
+            const { id, username, fullname, email, role, school, dateOfBirth, phone, occupation } = user;
+            return { id, username, fullname, email, role, school, dateOfBirth, phone, occupation };
+        }
+
+        function isAdmin() {
+            return isLoggedIn() && currentUser().role === Role.Admin;
+        }
+
+        function isSuperAdmin() {
+            return isLoggedIn() && currentUser().role === Role.SuperAdmin;
+        }
+
+        function currentUser() {
+            if (!isLoggedIn()) return;
+            const id = parseInt(headers.get('Authorization').split('.')[1]);
+            return users.find(x => x.id === id);
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            const authHeader = headers.get('Authorization') || '';
+            return authHeader.startsWith('Bearer fake-jwt-token');
         }
 
         function idFromUrl() {
             const urlParts = url.split('/');
             return parseInt(urlParts[urlParts.length - 1]);
+        }
+
+        function getSchools() {
+            if (!isLoggedIn()) return unauthorized();
+            return ok(schools.map(x => schoolDetails(x)));
+        }
+
+        function schoolDetails(school) {
+            const { schoolID, name, address, city, admins, requests } = school;
+            return { schoolID, name, address, city, admins, requests };
+        }
+
+        function addSchool() {
+            const school = body
+
+            if (schools.find(x => x.name === school.name)) {
+                return error('School "' + school.name + '" already exists')
+            }
+
+            school.schoolID = schools.length ? Math.max(...schools.map(x => x.schoolID)) + 1 : 1;
+            schools.push(school);
+            localStorage.setItem(schoolsKey, JSON.stringify(schools));
+            return ok();
+        }
+
+        function getSchoolById() {
+            if (!isLoggedIn()) return unauthorized();
+
+            const school = schools.find(x => x.schoolID === idFromUrl());
+            return ok(schoolDetails(school));
+        }
+
+        function addRequest() {
+            if (!isLoggedIn()) return unauthorized();
+
+            let params = body;
+            let school = schools.find(x => x.schoolID === idFromUrl());
+            console.log(params)
+            console.log(school.requests.length)
+            params.requestID = school.requests.length + 1;
+
+            console.log(school)
+            // update and save school
+            school.requests.push(params);
+            localStorage.setItem(schoolsKey, JSON.stringify(schools));
+
+            return ok();
+        }
+
+        function getRequestById() {
+            if (!isLoggedIn()) return unauthorized();
+
+            const school = schools.find(x => x.schoolID === idFromUrl());
+            const request = school.requests.find(x => x.requestID === idFromUrl());
+            return ok(request);
+        }
+
+        function addAdmin() {
+            if (!isLoggedIn()) return unauthorized();
+
+            let params = body;
+            let school = schools.find(x => x.schoolID === idFromUrl());
+
+            params.staffID = school.admins.length ? Math.max(...school.admins.map(x => x.staffID)) + 1 : 1;
+            school.admins.push(params.admin);
+            localStorage.setItem(schoolsKey, JSON.stringify(schools));
+
+            return ok();
+        }
+
+        function addOffer() {
+            if (!isLoggedIn()) return unauthorized();
+
+            let params = body;
+            //get schoolID from url without idFromUrl()
+            let sID = url.split('/')[4];
+
+            let school = schools.find(x => x.schoolID === parseInt(sID));
+            //get requestID from url without idFromUrl()
+            console.log(school)
+            let rID = url.split('/')[6];
+            let request = school.requests.find(x => x.requestID === parseInt(rID));
+            console.log(rID)
+            console.log(request.offers.length)
+            params.offerID = request.offers.length + 1;
+
+            request.offers.push(params);
+
+            let user = users.find(x => x.id === params.volunteer.id);
+            user.offers.push(params);
+            localStorage.setItem(usersKey, JSON.stringify(users));
+            localStorage.setItem(schoolsKey, JSON.stringify(schools));
+
+            return ok();
         }
     }
 }
