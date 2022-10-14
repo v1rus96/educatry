@@ -13,8 +13,10 @@ import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
 import { AdminComponent } from './admin';
 import { RequestComponent } from './request/request.component';
-import { AccordionModule, BadgeModule, ButtonModule, FormModule, GridModule, ModalModule, SharedModule, SidebarModule, TableModule, UtilitiesModule } from '@coreui/angular';
+import { AccordionModule, AlertModule, BadgeModule, ButtonModule, FormModule, GridModule, ModalModule, SharedModule, SidebarModule, TableModule, ToastModule, UtilitiesModule } from '@coreui/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { IconModule } from '@coreui/icons-angular';
+import { OfferComponent } from './offers';
 
 @NgModule({
     imports: [
@@ -32,14 +34,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         UtilitiesModule,
         ModalModule,
         ButtonModule,
-        FormModule
+        FormModule,
+        ToastModule,
+        IconModule
     ],
     declarations: [
         AppComponent,
         AlertComponent,
         HomeComponent,
         AdminComponent,
-        RequestComponent
+        RequestComponent,
+        OfferComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

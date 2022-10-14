@@ -12,7 +12,6 @@ users.push({ id: 1, username: 'admin', password: 'admin', firstName: 'Admin', la
 //array in local storage for schools
 const schoolsKey = 'angular-10-registration-login-example-schools';
 let schools = JSON.parse(localStorage.getItem(schoolsKey)) || [];
-schools.push({ schoolID: 1, name: 'School 1', address: 'Address 1', city: 'City 1', admins: [], requests: [] });
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {

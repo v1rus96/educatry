@@ -2,14 +2,14 @@
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService, SchoolService } from '@app/_services';
-import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { School, Request } from '@app/_models';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { School } from '@app/_models';
 import { ActivatedRoute, Router } from '@angular/router';
 
-@Component({ templateUrl: 'request.component.html' })
-export class RequestComponent implements OnInit {
+@Component({ templateUrl: 'offers.component.html' })
+export class OfferComponent implements OnInit {
     schools = null;
-    form: FormGroup;
+    form: UntypedFormGroup;
     schoolID: string;
     requestID: string;
     isAddMode: boolean;
@@ -17,10 +17,9 @@ export class RequestComponent implements OnInit {
     requests: Request[];
     loading = false;
     submitted = false;
-    success = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private schoolService: SchoolService,
@@ -30,15 +29,12 @@ export class RequestComponent implements OnInit {
 
 
     ngOnInit() {
-        console.log(this.accountService.userValue);
-        this.schoolService.getSchoolById(this.accountService.userValue.school).subscribe(school => {
-            this.school = school;
-            this.requests = school.requests;
-        });
+        this.schoolService.getAllSchools()
+            .pipe(first())
+            .subscribe(schools => this.schools = schools);
 
 
-        
-        this.schoolID = this.accountService.userValue.school;
+        // this.schoolID = this.route.snapshot.params['schoolID'];
         // this.requestID = this.route.snapshot.params['requestID'];
         this.isAddMode = !this.schoolID;
         
@@ -49,13 +45,9 @@ export class RequestComponent implements OnInit {
         }
 
         this.form = this.formBuilder.group({
-            description: ['', Validators.required],
-            date: ['', Validators.required],
-            time: ['', Validators.required],
-            studentLevel: ['', Validators.required],
-            numberOfStudents: ['', Validators.required],
-            status: "NEW",
-            offers: [[]]
+            remarks: ['', Validators.required],
+            volunteer: this.accountService.userValue,
+            request: [this.requestID]
         });
 
         if (!this.isAddMode) {
@@ -70,7 +62,7 @@ export class RequestComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-        console.log(this.form.value)
+        console.log(this.form)
         // reset alerts on submit
         this.alertService.clear();
 
@@ -83,7 +75,7 @@ export class RequestComponent implements OnInit {
 
         this.loading = true;
     
-            this.addRequest();
+            this.addOffer();
         // } else {
         //     this.updateUser();
         // }
@@ -102,7 +94,7 @@ export class RequestComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['/request'], { relativeTo: this.route });
+                    this.router.navigate(['../'], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);
@@ -110,22 +102,4 @@ export class RequestComponent implements OnInit {
                 }
             });
     }
-
-    private addRequest() {
-        this.schoolService.addRequest(this.schoolID, this.form.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
-                    this.success = true;
-                    this.router.navigate(['/requests'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                    this.success = false;
-                }
-            });
-    }
-
 }

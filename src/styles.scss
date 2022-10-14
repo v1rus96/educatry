@@ -32,7 +32,28 @@ a { cursor: pointer }
   .stats {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: repeat(5, minmax(max-content, 1fr));
+    grid-template-columns: 10% 20% 35% 20% 10%;
     grid-gap: 1rem;
     width: 100%;
+    text-align: left;
+  }
+
+  .stats-2 {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 10% 15% 15% 30% 15% 10%;
+    grid-gap: 1rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .center-it {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+  .container-lg {
+    margin-top: 2rem;
   }

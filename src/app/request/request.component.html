@@ -1,18 +1,21 @@
-﻿<h1 style="margin: 0 1rem 2rem 1rem;">Requests</h1>
+﻿<div class="p-4">
+  <div class="container">
+<h1 style="margin: 0 0 2rem 0;">Offers</h1>
 
-<button *ngIf="requests.length != 0" [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Offer</button>
+<button *ngIf="requests.length == 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Create request</button>
 <c-accordion *ngFor="let request of requests">
   
-    <c-accordion-item style="margin: 1rem;" #item0="cAccordionItem" [visible]="false">
+    <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
-          <div class="stats">
-            <h5 style="margin: 0 1rem;"><c-badge color="dark">ID: {{ request.requestID }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark">Name: {{ request.date }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ request.time }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ request.description }}</c-badge></h5> 
+          <div class="stats-2">
+            <h5 style="margin: 0 1rem"><c-badge color="success">{{ request.status }}</c-badge></h5> 
+            <h5 style="margin: 0 1rem;"><c-badge color="dark">Date: {{ request.date }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">Time: {{ request.time }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">Student Level: {{ request.studentLevel }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">Students: {{ request.numberOfStudents }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
-            <c-badge *ngIf="request.offers.length == 0" color="danger" shape="rounded-pill">{{ request.offers.length }}</c-badge>
+            <c-badge *ngIf="request.offers.length == 0" color="light" shape="rounded-pill">{{ request.offers.length }}</c-badge>
             <c-badge *ngIf="request.offers.length > 0" color="success" shape="rounded-pill">{{ request.offers.length }}</c-badge>
           </h5> 
           </div>
@@ -30,13 +33,11 @@
         >
                     <thead cTableColor="light">
                       <tr>
-                        <th scope="col" style="width: 10%">Request ID</th>
-                        <th scope="col" style="width: 15%">Date</th>
-                        <th scope="col" style="width: 15%">Time</th>
-                        <th scope="col" style="width: 20%">Student Level</th>
-                        <th scope="col" style="width: 10%">#</th>
-                        <th scope="col" style="width: 15%">Status</th>
-                        <th scope="col" style="width: 15%">Action</th>
+                        <th scope="col" style="width: 20%">Status</th>
+                        <th scope="col" style="width: 20%">Date</th>
+                        <th scope="col" style="width: 20%">By</th>
+                        <th scope="col" style="width: 20%">Remarks</th>
+                        <th scope="col" style="width: 20%">Action</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -45,12 +46,10 @@
                         </td>
                     <tr *ngFor="let offer of request.offers">
                       <ng-container>
-                        <!-- <td>{{request.requestID}}</td>
-                        <td>{{request.date}}</td>
-                        <td>{{request.time}}</td>
-                        <td>{{request.studentLevel}}</td>
-                        <td>{{request.numberOfStudents}}</td>
-                        <td>{{request.status}}</td> -->
+                        <td><c-badge color="dark">{{offer.offerStatus}}</c-badge></td>
+                        <td>{{offer.offerDate}}</td>
+                        <td>{{offer.volunteer.username}}</td>
+                        <td>{{offer.remarks}}</td>
                         <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td>
                   </ng-container>
                   </tr>
@@ -73,30 +72,44 @@
  
 
         <div class="form-group col">
-          <label for="description">Last Name</label>
+          <label for="description">Description</label>
           <input type="text" formControlName="description" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />
           <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
               <div *ngIf="f.description.errors.required">Last Name is required</div>
           </div>
       </div>
       <div class="form-group col">
-        <label for="date">Last Name</label>
+        <label for="date">Date</label>
         <input type="text" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
         <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
             <div *ngIf="f.date.errors.required">Last Name is required</div>
         </div>
       </div>
       <div class="form-group col">
-        <label for="time">Last Name</label>
+        <label for="time">Time</label>
         <input type="text" formControlName="time" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.time.errors }" />
         <div *ngIf="submitted && f.time.errors" class="invalid-feedback">
             <div *ngIf="f.time.errors.required">Last Name is required</div>
         </div>
       </div>
-      <button [disabled]="loading" class="btn btn-primary">
+      <div class="form-group col">
+        <label for="studentLevel">Student Level</label>
+        <input type="text" formControlName="studentLevel" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.studentLevel.errors }" />
+        <div *ngIf="submitted && f.studentLevel.errors" class="invalid-feedback">
+            <div *ngIf="f.studentLevel.errors.required">Last Name is required</div>
+        </div>
+      </div>
+      <div class="form-group col">
+        <label for="numberOfStudents">Number of Students</label>
+        <input type="number" formControlName="numberOfStudents" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberOfStudents.errors }" />
+        <div *ngIf="submitted && f.numberOfStudents.errors" class="invalid-feedback">
+            <div *ngIf="f.numberOfStudents.errors.required">Last Name is required</div>
+        </div>
+      </div>
+      <!-- <button [disabled]="loading" class="btn btn-primary">
         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         Save
-      </button>
+      </button> -->
 
     </ng-container>
   </c-modal-body>
@@ -104,8 +117,10 @@
     <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
       Close
     </button>
-    <button cButton color="primary" type="submit">Save changes</button>
+    <button cButton color="primary" data-dismiss="scrollableLongContentModal.id" type="submit">Save changes</button>
   </c-modal-footer>
 </form>
 </c-modal>
 
+</div>
+</div>

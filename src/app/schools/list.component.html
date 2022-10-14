@@ -1,17 +1,19 @@
-﻿<h1 style="margin: 0 1rem 2rem 1rem;">Requests</h1>
-
+﻿<h1 style="margin: 0 0 2rem 0;">Schools</h1>
+<button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg">Create request</button>
 <c-accordion *ngFor="let school of schools">
-    <c-accordion-item style="margin: 1rem;" #item0="cAccordionItem" [visible]="false">
+    <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+          <div class="stats">
           <h5 style="margin: 0 1rem;"><c-badge color="dark">ID: {{ school.schoolID }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">Name: {{ school.name }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
-            <c-badge *ngIf="school.requests.length == 0" color="danger" shape="rounded-pill">{{ school.requests.length }}</c-badge>
-            <c-badge *ngIf="school.requests.length > 0" color="success" shape="rounded-pill">{{ school.requests.length }}</c-badge>
+            <c-badge *ngIf="school.admins.length == 0" color="light" shape="rounded-pill">{{ school.admins.length }}</c-badge>
+            <c-badge *ngIf="school.admins.length > 0" color="success" shape="rounded-pill">{{ school.admins.length }}</c-badge>
           </h5> 
+        </div>
         </button>
       </ng-template>
       <ng-template cTemplateId="accordionBodyTemplate">
@@ -26,29 +28,30 @@
         >
                     <thead cTableColor="light">
                       <tr>
-                        <th scope="col" style="width: 10%">Request ID</th>
-                        <th scope="col" style="width: 15%">Date</th>
-                        <th scope="col" style="width: 15%">Time</th>
-                        <th scope="col" style="width: 20%">Student Level</th>
-                        <th scope="col" style="width: 10%">#</th>
-                        <th scope="col" style="width: 15%">Status</th>
-                        <th scope="col" style="width: 15%">Action</th>
+                        <th scope="col" style="width: 25%">Username</th>
+                        <th scope="col" style="width: 25%">Fullname</th>
+                        <th scope="col" style="width: 25%">Email</th>
+                        <th scope="col" style="width: 25%">Phone</th>
+                        <!-- <th scope="col" style="width: 15%">Action</th> -->
                       </tr>
                       </thead>
                       <tbody>
-                        <td colSpan="7" *ngIf="school.requests.length == 0">
+                        <td colSpan="7" *ngIf="school.admins.length == 0">
                           <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
                         </td>
-                    <tr *ngFor="let request of school.requests">
+                    <tr *ngFor="let admin of school.admins">
                       <ng-container>
-                        <td>{{request.requestID}}</td>
-                        <td>{{request.date}}</td>
-                        <td>{{request.time}}</td>
-                        <td>{{request.studentLevel}}</td>
-                        <td>{{request.numberOfStudents}}</td>
-                        <td>{{request.status}}</td>
-                        <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td>
+                        <td>{{admin.username}}</td>
+                        <td>{{admin.fullname}}</td>
+                        <td>{{admin.email}}</td>
+                        <td>{{admin.phone}}</td>
+                        <!-- <td><button [cModalToggle]="addAdmin.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td> -->
                   </ng-container>
+                  </tr>
+                  <tr>
+                    <td align="center" colSpan="7">
+                      <button [cModalToggle]="addAdmin.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID)">Add Admin</button>
+                    </td>
                   </tr>
                 </tbody>
                 </table>
@@ -64,7 +67,29 @@
   </c-modal-header>
   <form cForm [formGroup]="form" (ngSubmit)="onSubmit()">
   <c-modal-body>
-    <ng-container *ngTemplateOutlet="longContent"></ng-container>
+    <ng-container>
+      <div class="form-group col">
+        <label for="name">Name</label>
+        <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">Name is required</div>
+        </div>
+    </div>
+    <div class="form-group col">
+      <label for="address">Address</label>
+      <input type="text" formControlName="address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+      <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+          <div *ngIf="f.address.errors.required">Address is required</div>
+      </div>
+  </div>
+  <div class="form-group col">
+    <label for="city">City</label>
+    <input type="text" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+    <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+        <div *ngIf="f.city.errors.required">City is required</div>
+    </div>
+</div>
+    </ng-container>
   </c-modal-body>
   <c-modal-footer>
     <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
@@ -75,18 +100,58 @@
 </form>
 </c-modal>
 
-<ng-template #longContent>
- 
-
-  <div class="form-group col">
-    <label for="remarks">Last Name</label>
-    <input type="text" formControlName="remarks" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }" />
-    <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
-        <div *ngIf="f.remarks.errors.required">Last Name is required</div>
+<c-modal #addAdmin id="addAdmin" alignment="center" scrollable>
+  <c-modal-header>
+    <h5 cModalTitle>Modal title</h5>
+    <button [cModalToggle]="addAdmin.id" cButtonClose></button>
+  </c-modal-header>
+  <form cForm [formGroup]="form2" (ngSubmit)="onSubmit2()">
+  <c-modal-body>
+    <ng-container>
+      
+      <div class="form-group">
+        <label for="fullname">Fullname</label>
+        <input type="text" formControlName="fullname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors }" />
+        <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
+            <div *ngIf="f.fullname.errors.required">Fullname is required</div>
+        </div>
     </div>
-</div>
-<button [disabled]="loading" class="btn btn-primary">
-  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-  Save
-</button>
-</ng-template>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+            <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+        <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+            <div *ngIf="f.phone.errors.required">Phone is required</div>
+        </div>
+    </div>
+    </ng-container>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="addAdmin.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" type="submit">Save changes</button>
+  </c-modal-footer>
+</form>
+</c-modal>

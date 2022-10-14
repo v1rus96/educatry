@@ -3,13 +3,15 @@ import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService, SchoolService } from '@app/_services';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { School } from '@app/_models';
+import { Role, School } from '@app/_models';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalService } from '@coreui/angular';
 
 @Component({ templateUrl: 'list.component.html' })
 export class ListComponent implements OnInit {
     schools = null;
     form: UntypedFormGroup;
+    form2: UntypedFormGroup;
     schoolID: string;
     requestID: string;
     isAddMode: boolean;
@@ -24,7 +26,8 @@ export class ListComponent implements OnInit {
         private router: Router,
         private schoolService: SchoolService,
         private accountService: AccountService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private modal: ModalService
     ) {}
 
 
@@ -45,10 +48,24 @@ export class ListComponent implements OnInit {
         }
 
         this.form = this.formBuilder.group({
-            remarks: [''],
-            volunteer: this.accountService.userValue,
-            request: [this.requestID]
+            name: ['', Validators.required],
+            address: ['', Validators.required],
+            city: ['', Validators.required],
+            requests: [[]],
+            admins: [[]]
+
         });
+
+        this.form2 = this.formBuilder.group({
+            fullname: ['', Validators.required],
+            email: ['', Validators.required],
+            username: ['', Validators.required],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            phone: ['', Validators.required],
+            role: [Role.Admin],
+            school: [this.schoolID]
+        });
+
 
         if (!this.isAddMode) {
             this.schoolService.getSchoolById(this.schoolID)
@@ -75,7 +92,31 @@ export class ListComponent implements OnInit {
 
         this.loading = true;
     
-            this.addOffer();
+            this.createSchool();
+        // } else {
+        //     this.updateUser();
+        // }
+        
+    }
+
+    onSubmit2() {
+        this.submitted = true;
+        console.log(this.form2.value)
+        // reset alerts on submit
+        this.alertService.clear();
+
+        // stop here if form is invalid
+        if (this.form2.invalid) {
+            return;
+        }
+
+
+
+        this.loading = true;
+        //toggle modal
+
+    
+        this.createUser();
         // } else {
         //     this.updateUser();
         // }
@@ -83,18 +124,48 @@ export class ListComponent implements OnInit {
     }
 
 
-    setID(schoolID, requestID) {
+    setID(schoolID) {
         this.schoolID = schoolID;
-        this.requestID = requestID;
     }
 
-    private addOffer() {
-        this.schoolService.addOffer(this.schoolID, this.requestID, this.form.value)
+    private createSchool() {
+        this.schoolService.addSchool(this.form.value)
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
+                    this.alertService.success('School added successfully', { keepAfterRouteChange: true });
                     this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
+
+    private addAdmin() {
+        this.schoolService.addAdmin(this.schoolID, this.form2.value)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    // this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
+                    // this.router.navigate(['/schools'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
+
+    private createUser() {
+        this.accountService.register(this.form2.value)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Admin added successfully', { keepAfterRouteChange: true });
+                    this.addAdmin();
+                    this.router.navigate(['/schools'], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);

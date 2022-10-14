@@ -1,5 +1,5 @@
 ﻿<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+<!-- <nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Users</a>
@@ -7,36 +7,27 @@
         <a class="nav-item nav-link" routerLink="/schools" >Admin</a>
         <a class="nav-item nav-link" (click)="logout()">Logout</a>
     </div>
-</nav>
+</nav> -->
 
 <c-sidebar visible *ngIf="user">
-    <c-sidebar-brand>Sidebar Brand</c-sidebar-brand>
+    <c-sidebar-brand [brandFull]="{
+      src: '../assets/educacity.png',
+      width: 150,
+      alt: 'CoreUI Logo'
+    }"></c-sidebar-brand>
     <c-sidebar-nav [navItems]="navItems"></c-sidebar-nav>
     <c-sidebar-toggler></c-sidebar-toggler>
   </c-sidebar>
   
 <!-- main app container -->
-<div class="app-container" [ngClass]="{ 'bg-light': user }">
-    <alert></alert>
-    <router-outlet></router-outlet>
-</div>
 
 <div class="wrapper d-flex flex-column min-vh-100 bg-light dark:bg-transparent">
    
-    <div class="body flex-grow-1 px-3">
+    <div class="body flex-grow-1 px-3 center-it">
       <c-container breakpoint="lg" class="h-auto">
+        <alert></alert>
         <router-outlet></router-outlet>
       </c-container>
     </div>
    
   </div>
-
-<!-- credits -->
-<div class="text-center mt-4">
-    <p>
-        <a href="https://jasonwatmore.com/post/2020/07/18/angular-10-user-registration-and-login-example-tutorial" target="_top">Angular 10 - User Registration and Login Example & Tutorial</a>
-    </p>
-    <p>
-        <a href="https://jasonwatmore.com" target="_top">JasonWatmore.com</a>
-    </p>
-</div>
