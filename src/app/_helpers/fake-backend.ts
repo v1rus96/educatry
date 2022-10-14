@@ -54,6 +54,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 //get request by id as schools/:schoolID/request/:requestID
                 case url.match(/\/schools\/\d+\/request\/\d+$/) && method === 'GET':
                     return getRequestById();
+                //update status /schools/${schoolID}/request/${requestID}/offer/${offerID}
+                case url.match(/\/schools\/\d+\/request\/\d+\/offer\/\d+$/) && method === 'POST':
+                    return updateStatus();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -78,9 +81,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (users.find(x => x.username === user.username)) {
                 return error('Username "' + user.username + '" is already taken')
             }
-
-            user.role = Role.User;
-            user.offers = [];   
 
             user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
             users.push(user);
@@ -263,6 +263,32 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             user.offers.push(params);
             localStorage.setItem(usersKey, JSON.stringify(users));
             localStorage.setItem(schoolsKey, JSON.stringify(schools));
+
+            return ok();
+        }
+
+        function updateStatus() {
+            if (!isLoggedIn()) return unauthorized();
+
+            let params = body;
+            console.log(params)
+            //get schoolID from url without idFromUrl()
+            let sID = url.split('/')[4];
+
+            let school = schools.find(x => x.schoolID === parseInt(sID));
+            //get requestID from url without idFromUrl()
+            console.log(school)
+            let rID = url.split('/')[6];
+
+
+            let request = school.requests.find(x => x.requestID === parseInt(rID));
+            request.status = params.status;
+            
+            let oID = url.split('/')[8];
+            let offer = request.offers.find(x => x.offerID === parseInt(oID));
+            offer.offerStatus = params.status;
+            localStorage.setItem(schoolsKey, JSON.stringify(schools));
+
 
             return ok();
         }

@@ -12,6 +12,7 @@ export class RequestComponent implements OnInit {
     form: FormGroup;
     schoolID: string;
     requestID: string;
+    offerID: string;
     isAddMode: boolean;
     school: School;
     requests: Request[];
@@ -91,9 +92,10 @@ export class RequestComponent implements OnInit {
     }
 
 
-    setID(schoolID, requestID) {
-        this.schoolID = schoolID;
+    setID(requestID, offerID, status) {
+        this.offerID = offerID;
         this.requestID = requestID;
+        this.updateStatus(status);
     }
 
     private addOffer() {
@@ -103,6 +105,21 @@ export class RequestComponent implements OnInit {
                 next: () => {
                     this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
                     this.router.navigate(['/request'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
+
+    private updateStatus(status: string) {
+        this.schoolService.updateStatus(this.schoolID, this.requestID, this.offerID, status)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Status updated', { keepAfterRouteChange: true });
+                    this.router.navigate(['../'], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);

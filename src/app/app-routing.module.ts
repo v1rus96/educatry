@@ -14,7 +14,7 @@ const schoolsModule = () => import('./schools/schools.module').then(x => x.Schoo
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard], data: { roles: [Role.SuperAdmin] }, },
+    { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
     { path: 'schools', loadChildren: schoolsModule, canActivate: [AuthGuard], data: { roles: [Role.SuperAdmin] } },
     { path: 'account', loadChildren: accountModule },
     { path: 'requests', component: RequestComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }  },

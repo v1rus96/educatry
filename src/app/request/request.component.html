@@ -46,11 +46,16 @@
                         </td>
                     <tr *ngFor="let offer of request.offers">
                       <ng-container>
-                        <td><c-badge color="dark">{{offer.offerStatus}}</c-badge></td>
+                        <td>
+                          <c-badge *ngIf="offer.offerStatus == 'PENDING'" color="warning">{{offer.offerStatus}}</c-badge>
+                          <c-badge *ngIf="offer.offerStatus == 'ACCEPTED'" color="success">{{offer.offerStatus}}</c-badge>
+                          <c-badge *ngIf="offer.offerStatus == 'CLOSED'" color="danger">{{offer.offerStatus}}</c-badge>
+                        </td>
                         <td>{{offer.offerDate}}</td>
                         <td>{{offer.volunteer.username}}</td>
                         <td>{{offer.remarks}}</td>
-                        <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td>
+                        <td><button style="color: white;" class="btn btn-sm btn-success mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')">Accept</button>
+                          <button style="color: white;" class="btn btn-sm btn-danger mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'CLOSED')">Close</button></td>
                   </ng-container>
                   </tr>
                 </tbody>

@@ -4,6 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService } from '@app/_services';
+import { Role } from '@app/_models';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
@@ -28,6 +29,8 @@ export class RegisterComponent implements OnInit {
             phone: ['', Validators.required],
             occupation: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
+            role: Role.User,
+            offers: [[]],
         });
     }
 

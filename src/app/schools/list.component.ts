@@ -55,7 +55,7 @@ export class ListComponent implements OnInit {
             admins: [[]]
 
         });
-
+        console.log(this.schoolID)
         this.form2 = this.formBuilder.group({
             fullname: ['', Validators.required],
             email: ['', Validators.required],
@@ -115,7 +115,7 @@ export class ListComponent implements OnInit {
         this.loading = true;
         //toggle modal
 
-    
+        this.form2.patchValue({school: this.schoolID});
         this.createUser();
         // } else {
         //     this.updateUser();
@@ -124,7 +124,7 @@ export class ListComponent implements OnInit {
     }
 
 
-    setID(schoolID) {
+    setID(schoolID: string) {
         this.schoolID = schoolID;
     }
 

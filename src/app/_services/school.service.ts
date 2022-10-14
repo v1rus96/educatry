@@ -43,4 +43,8 @@ export class SchoolService {
         return this.http.post(`${environment.apiUrl}/schools/${schoolID}/request/${requestID}/offer`, offer);
     }
 
+    updateStatus(schoolID: string, requestID: string, offerID: string, status: string) {
+        console.log(schoolID, requestID, offerID, status);
+        return this.http.post(`${environment.apiUrl}/schools/${schoolID}/request/${requestID}/offer/${offerID}`, { status });
+    }
 }
