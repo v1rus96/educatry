@@ -1,0 +1,38 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+@import "@coreui/coreui/scss/coreui";
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+a { cursor: pointer }
+
+.app-container {
+    min-height: 320px;
+    overflow: hidden;
+}
+
+.btn-delete-user {
+    width: 40px;
+    text-align: center;
+    box-sizing: content-box;
+}
+
+.wrapper {
+    width: 100%;
+    @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));
+    @include ltr-rtl("padding-right", var(--cui-sidebar-occupy-end, 0));
+    will-change: auto;
+    @include transition(padding .15s);
+  }
+  
+  .app-container {
+    min-height: 50px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(5, minmax(max-content, 1fr));
+    grid-gap: 1rem;
+    width: 100%;
+  }

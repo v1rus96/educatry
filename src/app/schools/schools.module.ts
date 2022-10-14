@@ -9,12 +9,21 @@ import { AddEditComponent } from './add-edit.component';
 import { AddRequestComponent } from './add-request.component';
 import { AddAdminComponent } from './add-admin.component';
 import { AddOfferComponent } from './add-offer.component';
+import { AccordionModule, BadgeModule, ButtonModule, FormModule, ModalModule, SharedModule, TableModule, UtilitiesModule } from '@coreui/angular';
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        SchoolsRoutingModule
+        SchoolsRoutingModule,
+        ModalModule,
+        AccordionModule,
+        TableModule,
+        BadgeModule,
+        UtilitiesModule,
+        FormModule,
+        ButtonModule,
+        SharedModule
     ],
     declarations: [
         LayoutComponent,

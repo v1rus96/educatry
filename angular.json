@@ -7,7 +7,7 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "less"
+          "style": "scss"
         }
       },
       "root": "",
@@ -27,7 +27,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.less"
+              "src/styles.scss"
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -117,7 +117,6 @@
       }
     }
   },
-  "defaultProject": "angular-registration-login-example",
   "cli": {
     "analytics": "aee4346d-93cf-4b04-89b7-c1a4e451ae59"
   }

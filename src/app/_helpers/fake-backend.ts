@@ -256,7 +256,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             console.log(rID)
             console.log(request.offers.length)
             params.offerID = request.offers.length + 1;
-
+            params.offerStatus = "PENDING";
+            params.offerDate = new Date().getDate() + "/" + (new Date().getMonth() + 1) + "/" + new Date().getFullYear();
             request.offers.push(params);
 
             let user = users.find(x => x.id === params.volunteer.id);

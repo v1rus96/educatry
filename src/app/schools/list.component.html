@@ -1,78 +1,92 @@
-﻿<h1>Users</h1>
-<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th style="width: 25%">First Name</th>
-            <th style="width: 25%">Last Name</th>
-            <th style="width: 25%">Username</th>
-            <th style="width: 15%">Requests</th>
-            <th style="width: 10%"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let school of schools">
-            <td>{{school.name}}</td>
-            <td>{{school.address}}</td>
-            <td>{{school.city}}</td>
-            <td>
-                <ul *ngFor="let admin of school.admins">
-                    <li>{{admin.username}}</li>
-                </ul>
-            </td>
-            <td style="white-space: nowrap">
-                <a routerLink="admin/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                <!-- <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="school.isDeleting">
-                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                    <span *ngIf="!user.isDeleting">Delete</span>
-                </button> -->
-            </td>
-        </tr>
-        <tr *ngIf="!schools">
-            <td colspan="4" class="text-center">
-                <span class="spinner-border spinner-border-lg align-center"></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+﻿<h1 style="margin: 0 1rem 2rem 1rem;">Requests</h1>
 
-<h1>Users</h1>
-<a routerLink="add" class="btn btn-sm btn-success mb-2">Add User</a>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th style="width: 25%">First Name</th>
-            <th style="width: 25%">Last Name</th>
-            <th style="width: 25%">Username</th>
-            <th style="width: 15%">Requests</th>
-            <th style="width: 10%"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let school of schools">
-            <td>{{school.name}}</td>
-            <td>{{school.address}}</td>
-            <td><a routerLink="request/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a></td>
-            <td>
-                <ul *ngFor="let request of school.requests">
-                    <li>
-                        {{request.requestID}}
-                        <a routerLink="{{school.schoolID}}/request/{{request.requestID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                    </li>
-                </ul>
-            </td>
-            <td style="white-space: nowrap">
-                <a routerLink="request/{{school.schoolID}}" class="btn btn-sm btn-primary mr-1">Edit</a>
-                <!-- <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="school.isDeleting">
-                    <span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span>
-                    <span *ngIf="!user.isDeleting">Delete</span>
-                </button> -->
-            </td>
-        </tr>
-        <tr *ngIf="!schools">
-            <td colspan="4" class="text-center">
-                <span class="spinner-border spinner-border-lg align-center"></span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<c-accordion *ngFor="let school of schools">
+    <c-accordion-item style="margin: 1rem;" #item0="cAccordionItem" [visible]="false">
+      <ng-template cTemplateId="accordionHeaderTemplate">
+        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+          <h5 style="margin: 0 1rem;"><c-badge color="dark">ID: {{ school.schoolID }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">Name: {{ school.name }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem">
+            <c-badge *ngIf="school.requests.length == 0" color="danger" shape="rounded-pill">{{ school.requests.length }}</c-badge>
+            <c-badge *ngIf="school.requests.length > 0" color="success" shape="rounded-pill">{{ school.requests.length }}</c-badge>
+          </h5> 
+        </button>
+      </ng-template>
+      <ng-template cTemplateId="accordionBodyTemplate">
+        <div class="accordion-body" style="padding: 0;">
+          <table
+          [hover]="false"
+          [responsive]="true"
+          [striped]="true"
+          cAlign="middle"
+          cTable
+          class="mb-0 border"
+        >
+                    <thead cTableColor="light">
+                      <tr>
+                        <th scope="col" style="width: 10%">Request ID</th>
+                        <th scope="col" style="width: 15%">Date</th>
+                        <th scope="col" style="width: 15%">Time</th>
+                        <th scope="col" style="width: 20%">Student Level</th>
+                        <th scope="col" style="width: 10%">#</th>
+                        <th scope="col" style="width: 15%">Status</th>
+                        <th scope="col" style="width: 15%">Action</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        <td colSpan="7" *ngIf="school.requests.length == 0">
+                          <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                        </td>
+                    <tr *ngFor="let request of school.requests">
+                      <ng-container>
+                        <td>{{request.requestID}}</td>
+                        <td>{{request.date}}</td>
+                        <td>{{request.time}}</td>
+                        <td>{{request.studentLevel}}</td>
+                        <td>{{request.numberOfStudents}}</td>
+                        <td>{{request.status}}</td>
+                        <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td>
+                  </ng-container>
+                  </tr>
+                </tbody>
+                </table>
+        </div>
+      </ng-template>
+    </c-accordion-item>
+  </c-accordion>
+
+  <c-modal #scrollableLongContentModal id="scrollableLongContentModal" alignment="center" scrollable>
+  <c-modal-header>
+    <h5 cModalTitle>Modal title</h5>
+    <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
+  </c-modal-header>
+  <form cForm [formGroup]="form" (ngSubmit)="onSubmit()">
+  <c-modal-body>
+    <ng-container *ngTemplateOutlet="longContent"></ng-container>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+      Close
+    </button>
+    <button cButton color="primary" type="submit">Save changes</button>
+  </c-modal-footer>
+</form>
+</c-modal>
+
+<ng-template #longContent>
+ 
+
+  <div class="form-group col">
+    <label for="remarks">Last Name</label>
+    <input type="text" formControlName="remarks" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }" />
+    <div *ngIf="submitted && f.remarks.errors" class="invalid-feedback">
+        <div *ngIf="f.remarks.errors.required">Last Name is required</div>
+    </div>
+</div>
+<button [disabled]="loading" class="btn btn-primary">
+  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+  Save
+</button>
+</ng-template>

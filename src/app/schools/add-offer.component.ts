@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { SchoolService, AlertService, AccountService } from '@app/_services';
@@ -8,7 +8,7 @@ import { Role, School } from '@app/_models';
 
 @Component({ templateUrl: 'add-offer.component.html' })
 export class AddOfferComponent implements OnInit {
-    form: FormGroup;
+    form: UntypedFormGroup;
     schoolID: string;
     requestID: string;
     isAddMode: boolean;
@@ -17,7 +17,7 @@ export class AddOfferComponent implements OnInit {
     submitted = false;
 
     constructor(
-        private formBuilder: FormBuilder,
+        private formBuilder: UntypedFormBuilder,
         private route: ActivatedRoute,
         private router: Router,
         private schoolService: SchoolService,

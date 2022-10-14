@@ -13,13 +13,26 @@ import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
 import { AdminComponent } from './admin';
 import { RequestComponent } from './request/request.component';
+import { AccordionModule, BadgeModule, ButtonModule, FormModule, GridModule, ModalModule, SharedModule, SidebarModule, TableModule, UtilitiesModule } from '@coreui/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        AccordionModule,
+        SharedModule,
+        BrowserAnimationsModule,
+        TableModule,
+        BadgeModule,
+        SidebarModule,
+        GridModule,
+        UtilitiesModule,
+        ModalModule,
+        ButtonModule,
+        FormModule
     ],
     declarations: [
         AppComponent,

@@ -1,18 +1,125 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { SchoolService } from '@app/_services';
+import { AccountService, AlertService, SchoolService } from '@app/_services';
+import { FormBuilder, FormGroup, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { School, Request } from '@app/_models';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({ templateUrl: 'request.component.html' })
 export class RequestComponent implements OnInit {
     schools = null;
+    form: FormGroup;
+    schoolID: string;
+    requestID: string;
+    isAddMode: boolean;
+    school: School;
+    requests: Request[];
+    loading = false;
+    submitted = false;
 
-    constructor(private schoolService: SchoolService) {}
+    constructor(
+        private formBuilder: FormBuilder,
+        private route: ActivatedRoute,
+        private router: Router,
+        private schoolService: SchoolService,
+        private accountService: AccountService,
+        private alertService: AlertService
+    ) {}
+
 
     ngOnInit() {
-        this.schoolService.getAllSchools()
+        console.log(this.accountService.userValue);
+        this.schoolService.getSchoolById(this.accountService.userValue.school).subscribe(school => {
+            this.school = school;
+            this.requests = school.requests;
+        });
+
+
+        
+        this.schoolID = this.accountService.userValue.school;
+        // this.requestID = this.route.snapshot.params['requestID'];
+        this.isAddMode = !this.schoolID;
+        
+        // password not required in edit mode
+        const passwordValidators = [Validators.minLength(6)];
+        if (this.isAddMode) {
+            passwordValidators.push(Validators.required);
+        }
+
+        this.form = this.formBuilder.group({
+            description: ['', Validators.required],
+            date: ['', Validators.required],
+            time: ['', Validators.required],
+            offers: [[]]
+        });
+
+        if (!this.isAddMode) {
+            this.schoolService.getSchoolById(this.schoolID)
+                .pipe(first())
+                .subscribe(x => this.form.patchValue(x));
+        }
+    }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
+
+    onSubmit() {
+        this.submitted = true;
+        console.log(this.form.value)
+        // reset alerts on submit
+        this.alertService.clear();
+
+        // stop here if form is invalid
+        if (this.form.invalid) {
+            return;
+        }
+
+
+
+        this.loading = true;
+    
+            this.addRequest();
+        // } else {
+        //     this.updateUser();
+        // }
+        
+    }
+
+
+    setID(schoolID, requestID) {
+        this.schoolID = schoolID;
+        this.requestID = requestID;
+    }
+
+    private addOffer() {
+        this.schoolService.addOffer(this.schoolID, this.requestID, this.form.value)
             .pipe(first())
-            .subscribe(schools => this.schools = schools);
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
+                    this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
+
+    private addRequest() {
+        this.schoolService.addRequest(this.schoolID, this.form.value)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
+                    this.router.navigate(['../'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
     }
 
 }
