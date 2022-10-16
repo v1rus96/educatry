@@ -6,15 +6,18 @@ import { INavData } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { cilListNumbered, cilPaperPlane, cilHome, cilBank, cilUser, brandSet } from '@coreui/icons';
 
+
 @Component({ selector: 'app', templateUrl: 'app.component.html', providers: [IconSetService] })
 export class AppComponent {
     user: User;
-    navItems: INavData[] = [];
+
+    navItems: INavData[] = [
+      
+    ];
 
     constructor(private accountService: AccountService, public iconSet: IconSetService) {
-        this.accountService.user.subscribe(x => this.user = x);
+        this.accountService.user.subscribe(x => this.user = x)
         iconSet.icons = { cilListNumbered, cilPaperPlane, cilHome, cilBank, cilUser, ...brandSet };
-        console.log(this.isSuperAdmin)
 
     }
 
@@ -27,7 +30,7 @@ export class AppComponent {
     }
 
     ngOnInit() {
-
+      
       this.navItems.push(
         {
         name: 'Menu',
@@ -46,7 +49,7 @@ export class AppComponent {
     
       {
         name: 'Profile',
-        url: `/users/edit/${this.user.id}`,
+        url: `/users/edit/${this.user?.id}`,
         iconComponent: { name: 'cil-user' },
       },
       )
@@ -77,7 +80,7 @@ export class AppComponent {
       }
 
     }
-
+    
     ngOnDestroy() {
       this.navItems = [];
     }

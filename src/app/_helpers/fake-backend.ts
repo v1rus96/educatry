@@ -282,7 +282,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
 
             let request = school.requests.find(x => x.requestID === parseInt(rID));
-            request.status = params.status;
+            request.status = "CLOSED";
             
             let oID = url.split('/')[8];
             let offer = request.offers.find(x => x.offerID === parseInt(oID));

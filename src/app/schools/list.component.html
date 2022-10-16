@@ -1,5 +1,6 @@
 ﻿<h1 style="margin: 0 0 2rem 0;">Schools</h1>
 <button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg">Add School</button>
+<h3 *ngIf="schools?.length == 0">There is no schools in the system!</h3>
 <c-accordion *ngFor="let school of schools">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
@@ -10,8 +11,8 @@
           <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
-            <c-badge *ngIf="school.admins.length == 0" color="light" shape="rounded-pill">{{ school.admins.length }}</c-badge>
-            <c-badge *ngIf="school.admins.length > 0" color="success" shape="rounded-pill">{{ school.admins.length }}</c-badge>
+            <c-badge *ngIf="school.admins?.length == 0" color="light" shape="rounded-pill">{{ school.admins?.length }}</c-badge>
+            <c-badge *ngIf="school.admins?.length > 0" color="success" shape="rounded-pill">{{ school.admins?.length }}</c-badge>
           </h5> 
         </div>
         </button>
@@ -36,7 +37,7 @@
                       </tr>
                       </thead>
                       <tbody>
-                        <td colSpan="7" *ngIf="school.admins.length == 0">
+                        <td colSpan="7" *ngIf="school.admins?.length == 0">
                           <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
                         </td>
                     <tr *ngFor="let admin of school.admins">
@@ -111,38 +112,38 @@
       
       <div class="form-group">
         <label for="fullname">Fullname</label>
-        <input type="text" formControlName="fullname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fullname.errors }" />
-        <div *ngIf="submitted && f.fullname.errors" class="invalid-feedback">
-            <div *ngIf="f.fullname.errors.required">Fullname is required</div>
+        <input type="text" formControlName="fullname" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.fullname.errors }" />
+        <div *ngIf="submitted && f2.fullname.errors" class="invalid-feedback">
+            <div *ngIf="f2.fullname.errors.required">Fullname is required</div>
         </div>
     </div>
     <div class="form-group">
         <label for="email">Email</label>
-        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-            <div *ngIf="f.email.errors.required">Email is required</div>
+        <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.email.errors }" />
+        <div *ngIf="submitted && f2.email.errors" class="invalid-feedback">
+            <div *ngIf="f2.email.errors.required">Email is required</div>
         </div>
     </div>
     <div class="form-group">
         <label for="username">Username</label>
-        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-            <div *ngIf="f.username.errors.required">Username is required</div>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.username.errors }" />
+        <div *ngIf="submitted && f2.username.errors" class="invalid-feedback">
+            <div *ngIf="f2.username.errors.required">Username is required</div>
         </div>
     </div>
     <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-            <div *ngIf="f.password.errors.required">Password is required</div>
-            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.password.errors }" />
+        <div *ngIf="submitted && f2.password.errors" class="invalid-feedback">
+            <div *ngIf="f2.password.errors.required">Password is required</div>
+            <div *ngIf="f2.password.errors.minlength">Password must be at least 6 characters</div>
         </div>
     </div>
     <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
-        <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
-            <div *ngIf="f.phone.errors.required">Phone is required</div>
+        <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.phone.errors }" />
+        <div *ngIf="submitted && f2.phone.errors" class="invalid-feedback">
+            <div *ngIf="f2.phone.errors.required">Phone is required</div>
         </div>
     </div>
     </ng-container>

@@ -1,7 +1,9 @@
 ﻿<div class="p-4">
   <div class="container">
 <h1 style="margin: 0 0 2rem 0;">Requests</h1>
-<c-accordion *ngFor="let school of schools">
+<h3 *ngIf="countRequests() == 0">There is no requests so far!</h3>
+<div *ngFor="let school of schools">
+<c-accordion *ngIf="countNewRequests(school.schoolID) != 0">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
@@ -11,8 +13,8 @@
           <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
-            <c-badge *ngIf="school.requests.length == 0" color="light" shape="rounded-pill">{{ school.requests.length }}</c-badge>
-            <c-badge *ngIf="school.requests.length > 0" color="success" shape="rounded-pill">{{ school.requests.length }}</c-badge>
+            <c-badge *ngIf="countNewRequests(school.schoolID) == 0" color="light" shape="rounded-pill">{{ countNewRequests(school.schoolID) }}</c-badge>
+            <c-badge *ngIf="countNewRequests(school.schoolID) > 0" color="success" shape="rounded-pill">{{ countNewRequests(school.schoolID) }}</c-badge>
           </h5> 
           </div>
         </button>
@@ -42,8 +44,9 @@
                         <td colSpan="7" *ngIf="school.requests.length == 0">
                           <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
                         </td>
-                    <tr *ngFor="let request of school.requests">
-                      <ng-container>
+                   
+                    <tr *ngFor="let request of school.requests" >
+                      <ng-container *ngIf="request.status !='CLOSED'">
                         <td>{{request.requestID}}</td>
                         <td>{{request.date}}</td>
                         <td>{{request.time}}</td>
@@ -51,14 +54,16 @@
                         <td>{{request.numberOfStudents}}</td>
                         <td>{{request.status}}</td>
                         <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td>
-                  </ng-container>
+                  </ng-container >
                   </tr>
+  
                 </tbody>
                 </table>
         </div>
       </ng-template>
     </c-accordion-item>
   </c-accordion>
+</div>
 
   <c-modal #scrollableLongContentModal id="scrollableLongContentModal" alignment="center" scrollable>
   <c-modal-header>

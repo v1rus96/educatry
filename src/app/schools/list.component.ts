@@ -77,6 +77,8 @@ export class ListComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
 
+    get f2() { return this.form2.controls; }
+
     onSubmit() {
         this.submitted = true;
         console.log(this.form)
@@ -165,7 +167,7 @@ export class ListComponent implements OnInit {
                 next: () => {
                     this.alertService.success('Admin added successfully', { keepAfterRouteChange: true });
                     this.addAdmin();
-                    this.router.navigate(['/schools'], { relativeTo: this.route });
+                    this.router.navigate(['../'], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);

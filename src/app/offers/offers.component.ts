@@ -16,6 +16,8 @@ export class OfferComponent implements OnInit {
     school: School;
     requests: Request[];
     loading = false;
+    requestsCount: number;
+    countNewReq: number;
     submitted = false;
 
     constructor(
@@ -80,6 +82,34 @@ export class OfferComponent implements OnInit {
         //     this.updateUser();
         // }
         
+    }
+
+    countRequests() {
+        let count = 0;
+        for(let i = 0; i < this.schools.length; i++) {
+            for(let j = 0; j < this.schools[i].requests.length; j++) {
+                if(this.schools[i].requests[j].status != "CLOSED") {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    //get number of requests for school with status NEW
+    countNewRequests(schoolID) {
+        let count = 0;
+        for(let i = 0; i < this.schools.length; i++) {
+            if(this.schools[i].schoolID == schoolID) {
+                for(let j = 0; j < this.schools[i].requests.length; j++) {
+                    if(this.schools[i].requests[j].status == "NEW") {
+                        count++;
+                    }
+                }
+            }
+        }
+        console.log(count);
+        return count;
     }
 
 

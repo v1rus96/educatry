@@ -79,7 +79,9 @@ export class AddAdminComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['../'], { relativeTo: this.route });
+                    this.router.navigate(['/schools'], { relativeTo: this.route });
+                    window.location.reload();
+                    
                 },
                 error: error => {
                     this.alertService.error(error);
@@ -96,6 +98,7 @@ export class AddAdminComponent implements OnInit {
                     this.alertService.success('User added successfully', { keepAfterRouteChange: true });
                     this.addAdmin();
                     this.router.navigate(['../'], { relativeTo: this.route });
+                    
                 },
                 error: error => {
                     this.alertService.error(error);
