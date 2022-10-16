@@ -27,15 +27,18 @@ export class AddEditComponent implements OnInit {
         
         // password not required in edit mode
         const passwordValidators = [Validators.minLength(6)];
+        const emailVal = [ Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')];
+        
         if (this.isAddMode) {
             passwordValidators.push(Validators.required);
         }
 
         this.form = this.formBuilder.group({
             fullname: ['', Validators.required],
-            email: ['', Validators.required],
+            email: ['', emailVal],
             phone: ['', Validators.required],
-            password: ['', passwordValidators]
+            password: ['', passwordValidators],
+            
         });
 
         if (!this.isAddMode) {
