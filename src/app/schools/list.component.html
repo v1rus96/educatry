@@ -41,7 +41,6 @@
     color: #e04644;
     font-family: emoji;
   }
-  
 
 
 </style>
@@ -168,6 +167,7 @@
         <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.email.errors }" />
         <div *ngIf="submitted && f2.email.errors" class="invalid-feedback">
             <div *ngIf="f2.email.errors.required">Email is required</div>
+            <div *ngIf="f2.email.errors.pattern">Email must contains @mail.com</div>
         </div>
     </div>
     <div class="form-group">
@@ -182,7 +182,7 @@
         <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.password.errors }" />
         <div *ngIf="submitted && f2.password.errors" class="invalid-feedback">
             <div *ngIf="f2.password.errors.required">Password is required</div>
-            <div *ngIf="f2.password.errors.minlength">Password must be at least 6 characters</div>
+            <div *ngIf="f2.password.errors.pattern">Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</div>
         </div>
     </div>
     <div class="form-group">
@@ -190,6 +190,7 @@
         <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.phone.errors }" />
         <div *ngIf="submitted && f2.phone.errors" class="invalid-feedback">
             <div *ngIf="f2.phone.errors.required">Phone is required</div>
+            <div *ngIf="f2.phone.errors.minlength" >minimum length is 8</div>
         </div>
     </div>
     </ng-container>
