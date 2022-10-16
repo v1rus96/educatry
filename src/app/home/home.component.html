@@ -15,12 +15,22 @@
     h1{
         font-family: 'Times New Roman', Times, serif;
     }
+    #loginBtn{
+        width:20%;
+        background-color: #e04644;
+        border: none;
+        font-weight: bold;
+        margin-top: 5%
+  }
+  #loginBtn:hover{
+    background-color:#4499d8 ;
+  }
     
 </style>
 <div class="p-4">
     <div class="container">
         <h1>Hi {{user.fullname}}!</h1>
         <h5>Welcome To Educatry System</h5>
-        <p><button cButton (click)="logout()">Log out</button></p>
+        <p><button cButton (click)="logout()" id="loginBtn">Log out</button></p>       
     </div>
 </div>
