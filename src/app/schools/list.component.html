@@ -83,7 +83,7 @@
                       </thead>
                       <tbody>
                         <td colSpan="7" *ngIf="school.admins?.length == 0">
-                          <h5 id="schoolErrMsg">There is no requests for this school!</h5>
+                          <h5 id="schoolErrMsg">No school admin has been assigned yet!</h5>
                         </td>
                     <tr *ngFor="let admin of school.admins">
                       <ng-container>
@@ -138,10 +138,10 @@
     </ng-container>
   </c-modal-body>
   <c-modal-footer>
-    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary" id="closeBtn">
       Close
     </button>
-    <button cButton color="primary" type="submit">Save changes</button>
+    <button cButton color="primary" type="submit" id="saveBtn">Save changes</button>
   </c-modal-footer>
 </form>
 </c-modal>
