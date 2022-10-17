@@ -143,8 +143,7 @@ export class ListComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('School added successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['../'], { relativeTo: this.route });
+                    this.alertService.success('School added successfully', { keepAfterRouteChange: true });       
                 },
                 error: error => {
                     this.alertService.error(error);
