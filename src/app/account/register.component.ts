@@ -39,7 +39,8 @@ export class RegisterComponent implements OnInit {
 
     onSubmit() {
         this.submitted = true;
-
+        this.checkAge();
+        this.checkPhone();
         // reset alerts on submit
         this.alertService.clear();
 
@@ -47,7 +48,6 @@ export class RegisterComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
-
         this.loading = true;
         this.accountService.register(this.form.value)
             .pipe(first())
@@ -62,4 +62,26 @@ export class RegisterComponent implements OnInit {
                 }
             });
     }
+
+        //check if dateofbirth above 18
+        checkAge() {
+            var today = new Date();
+            var birthDate = new Date(this.form.controls.dateOfBirth.value);
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                this.form.controls.dateOfBirth.setErrors({ 'incorrect': true });
+            }
+        }
+
+        //check phone for numbers
+        checkPhone() {
+            var phone = this.form.controls.phone.value;
+            if (isNaN(phone)) {
+                this.form.controls.phone.setErrors({ 'incorrect': true });
+            }
+        }
 }

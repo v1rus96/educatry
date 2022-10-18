@@ -1,6 +1,6 @@
 ﻿<div class="p-4">
   <div class="container">
-<h1 style="margin: 0 0 2rem 0;">Offers</h1>
+<h1 style="margin: 0 0 2rem 0;">School Requests & Offers</h1>
 
 <button *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Create request</button>
 <c-accordion *ngFor="let request of requests" disabled>

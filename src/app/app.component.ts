@@ -52,12 +52,6 @@ export class AppComponent {
         url: `/users/edit/${this.user?.id}`,
         iconComponent: { name: 'cil-user' },
       },
-      {
-        name: 'Manage Users',
-        url: `/users`,
-        iconComponent: { name: 'cil-user' },
-      },
-      
       )
 
       if (this.isSuperAdmin) {

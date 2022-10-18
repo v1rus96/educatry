@@ -1,11 +1,11 @@
 ﻿<style>
 h1{
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
+    /* font-family: 'Times New Roman', Times, serif;
+    font-weight: bold; */
 } 
 #scAdminSave , #scAdminCancel{
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
+    /* font-family: 'Times New Roman', Times, serif;
+    font-weight: bold; */
     width: 30%;
     text-align: center;
     border: none;
@@ -30,7 +30,7 @@ h1{
 
 </style>
 <h1 *ngIf="isAddMode">Add User</h1>
-<h1 *ngIf="!isAddMode">Edit My Profile</h1>
+<h1 *ngIf="!isAddMode">Edit Profile</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-row">
         <div class="form-group col">
@@ -70,6 +70,16 @@ h1{
             </div>
         </div>
     </div>
+    <div class="form-row" *ngIf="isAdmin">
+    <div class="form-group col">
+        <label for="position">Position</label>
+        <input type="text" formControlName="position" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.position.errors }" />
+        <div *ngIf="submitted && f.position.errors" class="invalid-feedback">
+            <div *ngIf="f.position.errors.required">Position is required</div>
+            <div *ngIf="f.position.errors.minlength" >minimum length is 8</div>
+        </div>
+    </div>
+</div>
     <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary" id="scAdminSave">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1" ></span>

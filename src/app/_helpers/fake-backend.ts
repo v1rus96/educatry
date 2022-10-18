@@ -5,12 +5,12 @@ import { delay, materialize, dematerialize } from 'rxjs/operators';
 import { Role } from '@app/_models';
 
 // array in local storage for registered users
-const usersKey = 'angular-10-registration-login-example-users';
+const usersKey = 'users';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
 users.push({ id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.SuperAdmin });
 
 //array in local storage for schools
-const schoolsKey = 'angular-10-registration-login-example-schools';
+const schoolsKey = 'schools';
 let schools = JSON.parse(localStorage.getItem(schoolsKey)) || [];
 
 @Injectable()
@@ -82,6 +82,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return error('Username "' + user.username + '" is already taken')
             }
 
+            if(users.find(x => x.staffID === user.staffID)) {
+                return error('Staff ID "' + user.staffID + '" already exists!')
+            }
+
             user.id = users.length ? Math.max(...users.map(x => x.id)) + 1 : 1;
             users.push(user);
             localStorage.setItem(usersKey, JSON.stringify(users));
@@ -144,8 +148,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function basicDetails(user) {
-            const { id, username, fullname, email, role, school, dateOfBirth, phone, occupation } = user;
-            return { id, username, fullname, email, role, school, dateOfBirth, phone, occupation };
+            const { id, username, fullname, email, role, school, dateOfBirth, phone, occupation, position } = user;
+            return { id, username, fullname, email, role, school, dateOfBirth, phone, occupation, position };
         }
 
         function isAdmin() {
@@ -185,8 +189,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         function addSchool() {
             const school = body
 
-            if (schools.find(x => x.name === school.name)) {
-                return error('School "' + school.name + '" already exists')
+            if (schools.find(x => x.name === school.name) && schools.find(x => x.city === school.city)) {
+                return error('School "' + school.name + '" already exists in this city!')
             }
 
             school.schoolID = schools.length ? Math.max(...schools.map(x => x.schoolID)) + 1 : 1;
@@ -232,8 +236,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             let params = body;
             let school = schools.find(x => x.schoolID === idFromUrl());
-
-            params.staffID = school.admins.length ? Math.max(...school.admins.map(x => x.staffID)) + 1 : 1;
+ 
             school.admins.push(params.admin);
             localStorage.setItem(schoolsKey, JSON.stringify(schools));
 

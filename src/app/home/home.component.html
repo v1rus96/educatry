@@ -10,10 +10,10 @@
     }
     h5{
         color: #e04644;
-        font-family: monospace;
+        /* font-family: monospace; */
     }
     h1{
-        font-family: 'Times New Roman', Times, serif;
+        /* font-family: 'Times New Roman', Times, serif; */
     }
     #loginBtn{
         width:20%;
@@ -29,8 +29,12 @@
 </style>
 <div class="p-4">
     <div class="container">
-        <h1>Hi {{user.fullname}}!</h1>
+        <h1>Hi, {{user.fullname}}!</h1>
         <h5>Welcome To Educatry System</h5>
-        <p><button cButton (click)="logout()" id="loginBtn">Log out</button></p>       
+    
+        <h3 *ngIf="isAdmin">Position: {{user.position}}!</h3>
+        <h3 *ngIf="isAdmin">School: {{school.name}}!</h3>
+
+        <p><button cButton (click)="logout()" color="primary" style="color: white;">Log out</button></p>       
     </div>
 </div>
