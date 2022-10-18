@@ -6,12 +6,14 @@ import { UsersRoutingModule } from './users-routing.module';
 import { LayoutComponent } from './layout.component';
 import { ListComponent } from './list.component';
 import { AddEditComponent } from './add-edit.component';
+import { ButtonModule } from '@coreui/angular';
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        UsersRoutingModule
+        UsersRoutingModule,
+        ButtonModule
     ],
     declarations: [
         LayoutComponent,

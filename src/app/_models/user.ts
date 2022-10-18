@@ -14,5 +14,6 @@ export class User {
     role: Role;
     school?: string;
     offers?: Offer[];
+    position?: string;
     token: string;
 }

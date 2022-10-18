@@ -42,9 +42,10 @@ export class ListComponent implements OnInit {
         this.isAddMode = !this.schoolID;
         
         // password not required in edit mode
-        const passwordValidators = [Validators.pattern('(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}')];
+        const passwordValidators = [Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')];
         const emailVal = [ Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')];
         const phoneVal = [Validators.minLength(8)];
+        
         if (this.isAddMode) {
             passwordValidators.push(Validators.required);
         }
@@ -61,15 +62,16 @@ export class ListComponent implements OnInit {
             city: ['', Validators.required],
             requests: [[]],
             admins: [[]]
-
         });
+
         console.log(this.schoolID)
         this.form2 = this.formBuilder.group({
             fullname: ['', Validators.required],
-            email: ['', [Validators.required , Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
+            email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]],
             username: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['', passwordValidators],
             phone: ['', Validators.required],
+            staffID: ['', Validators.required],
             position: ['', Validators.required],
             role: [Role.Admin],
             school: [this.schoolID]
@@ -110,9 +112,17 @@ export class ListComponent implements OnInit {
         
     }
 
+    //check phone for numbers
+    checkPhone() {
+        var phone = this.form2.controls.phone.value;
+        if (isNaN(phone)) {
+            this.form2.controls.phone.setErrors({ 'incorrect': true });
+        }
+    }
+
     onSubmit2() {
         this.submitted = true;
-        console.log(this.form2.value)
+        this.checkPhone()
         // reset alerts on submit
         this.alertService.clear();
 
