@@ -215,6 +215,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // update and save school
             school.requests.push(params);
             localStorage.setItem(schoolsKey, JSON.stringify(schools));
+  
 
             return ok();
         }
@@ -294,6 +295,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
     }
 }
+
 
 export const fakeBackendProvider = {
     // use fake backend in place of Http service for backend-less development
