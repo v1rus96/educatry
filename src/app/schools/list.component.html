@@ -33,6 +33,7 @@
                         <th scope="col" style="width: 25%">Fullname</th>
                         <th scope="col" style="width: 25%">Email</th>
                         <th scope="col" style="width: 25%">Phone</th>
+                        <th scope="col" style="width: 25%">Position</th>
                         <!-- <th scope="col" style="width: 15%">Action</th> -->
                       </tr>
                       </thead>
@@ -46,6 +47,7 @@
                         <td>{{admin.fullname}}</td>
                         <td>{{admin.email}}</td>
                         <td>{{admin.phone}}</td>
+                        <td>{{admin.position}}</td>
                         <!-- <td><button [cModalToggle]="addAdmin.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)">Offer</button></td> -->
                   </ng-container>
                   </tr>
@@ -103,7 +105,7 @@
 
 <c-modal #addAdmin id="addAdmin" alignment="center" scrollable>
   <c-modal-header>
-    <h5 cModalTitle>Modal title</h5>
+    <h5 cModalTitle>Add School Administrator</h5>
     <button [cModalToggle]="addAdmin.id" cButtonClose></button>
   </c-modal-header>
   <form cForm [formGroup]="form2" (ngSubmit)="onSubmit2()">
@@ -146,6 +148,13 @@
             <div *ngIf="f2.phone.errors.required">Phone is required</div>
         </div>
     </div>
+    <div class="form-group">
+      <label for="position">Position</label>
+      <input type="text" formControlName="position" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.position.errors }" />
+      <div *ngIf="submitted && f2.position.errors" class="invalid-feedback">
+          <div *ngIf="f2.position.errors.required">Position is required</div>
+      </div>
+  </div>
     </ng-container>
   </c-modal-body>
   <c-modal-footer>

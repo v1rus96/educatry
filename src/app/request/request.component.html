@@ -8,6 +8,7 @@
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
           <div class="stats-2">
+            <h5 style="margin: 0 1rem;"><c-badge color="dark">ID: {{ request.requestID }}</c-badge></h5> 
             <h5 style="margin: 0 1rem">
               <c-badge *ngIf="request.status == 'NEW'" color="success">{{ request.status }}</c-badge>
               <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{ request.status }}</c-badge>

@@ -62,6 +62,7 @@ export class ListComponent implements OnInit {
             username: ['', Validators.required],
             password: ['', [Validators.required, Validators.minLength(6)]],
             phone: ['', Validators.required],
+            position: ['', Validators.required],
             role: [Role.Admin],
             school: [this.schoolID]
         });
