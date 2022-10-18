@@ -1,7 +1,19 @@
-﻿<div class="p-4">
+﻿<style>
+  #reqTitle{
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bolder;
+    margin: 0 0 2rem 0;
+  }
+  #reqErrMsg{
+    color: #e04644;
+    font-family:emoji;
+ 
+  }
+</style>
+<div class="p-4">
   <div class="container">
-<h1 style="margin: 0 0 2rem 0;">Requests</h1>
-<h3 *ngIf="countRequests() == 0">There is no requests so far!</h3>
+<h1 id="reqTitle">Requests</h1>
+<h3 *ngIf="countRequests() == 0" id="reqErrMsg">No requests have been made yet!</h3>
 <div *ngFor="let school of schools">
 <c-accordion *ngIf="countNewRequests(school.schoolID) != 0">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
@@ -67,7 +79,7 @@
 
   <c-modal #scrollableLongContentModal id="scrollableLongContentModal" alignment="center" scrollable>
   <c-modal-header>
-    <h5 cModalTitle>Modal title</h5>
+    <h5 cModalTitle>Title</h5>
     <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
   </c-modal-header>
   <form cForm [formGroup]="form" (ngSubmit)="onSubmit()">

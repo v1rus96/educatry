@@ -1,5 +1,50 @@
-﻿<h1 style="margin: 0 0 2rem 0;">Schools</h1>
-<button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg">Add School</button>
+﻿<style>
+  h1{
+    margin: 0 0 2rem 0;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+  }
+  h3{
+    color:#e04644;
+  }
+  #regSchool{
+    margin-left: 70%;
+    background-color: #e04644;
+    border: none;
+    font-weight: bold;
+  }
+  #regSchool:hover{
+    background-color: #4499d8;
+  }
+  .btn:hover{
+    background-color: #e04644;
+    border: none;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .btn{
+    background-color: #4499d8;
+    border: none;
+  }
+  #saveBtn {
+    background-color: #e04644;
+  }
+  #saveBtn:hover , #closeBtn:hover{
+    opacity: 60%;
+  }
+  #closeBtn{
+    color: white;
+    background-color: #4499d8;
+  }
+  #schoolErrMsg{
+    margin: 0.5rem;
+    text-align: center;
+    color: #e04644;
+    font-family: emoji;
+  }
+
+
+</style>
+<h1>Schools <button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" id="regSchool">Register School</button></h1>
 <h3 *ngIf="schools?.length == 0">There is no schools in the system!</h3>
 <c-accordion *ngFor="let school of schools">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
@@ -39,7 +84,7 @@
                       </thead>
                       <tbody>
                         <td colSpan="7" *ngIf="school.admins?.length == 0">
-                          <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                          <h5 id="schoolErrMsg">No school admin has been assigned yet!</h5>
                         </td>
                     <tr *ngFor="let admin of school.admins">
                       <ng-container>
@@ -65,14 +110,14 @@
 
   <c-modal #scrollableLongContentModal id="scrollableLongContentModal" alignment="center" scrollable>
   <c-modal-header>
-    <h5 cModalTitle>Modal title</h5>
+    <h5 cModalTitle>Register School</h5>
     <button [cModalToggle]="scrollableLongContentModal.id" cButtonClose></button>
   </c-modal-header>
   <form cForm [formGroup]="form" (ngSubmit)="onSubmit()">
   <c-modal-body>
     <ng-container>
       <div class="form-group col">
-        <label for="name">Name</label>
+        <label for="name">School Name</label>
         <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
         <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
             <div *ngIf="f.name.errors.required">Name is required</div>
@@ -95,17 +140,17 @@
     </ng-container>
   </c-modal-body>
   <c-modal-footer>
-    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary" id="closeBtn">
       Close
     </button>
-    <button cButton color="primary" type="submit">Save changes</button>
+    <button cButton color="primary" type="submit" id="saveBtn">Save changes</button>
   </c-modal-footer>
 </form>
 </c-modal>
 
 <c-modal #addAdmin id="addAdmin" alignment="center" scrollable>
   <c-modal-header>
-    <h5 cModalTitle>Add School Administrator</h5>
+    <h5 cModalTitle>Add Admin to School</h5>
     <button [cModalToggle]="addAdmin.id" cButtonClose></button>
   </c-modal-header>
   <form cForm [formGroup]="form2" (ngSubmit)="onSubmit2()">
@@ -124,6 +169,7 @@
         <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.email.errors }" />
         <div *ngIf="submitted && f2.email.errors" class="invalid-feedback">
             <div *ngIf="f2.email.errors.required">Email is required</div>
+            <div *ngIf="f2.email.errors.pattern">Email must contains @mail.com</div>
         </div>
     </div>
     <div class="form-group">
@@ -138,7 +184,7 @@
         <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.password.errors }" />
         <div *ngIf="submitted && f2.password.errors" class="invalid-feedback">
             <div *ngIf="f2.password.errors.required">Password is required</div>
-            <div *ngIf="f2.password.errors.minlength">Password must be at least 6 characters</div>
+            <div *ngIf="f2.password.errors.pattern">Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</div>
         </div>
     </div>
     <div class="form-group">
@@ -146,6 +192,7 @@
         <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f2.phone.errors }" />
         <div *ngIf="submitted && f2.phone.errors" class="invalid-feedback">
             <div *ngIf="f2.phone.errors.required">Phone is required</div>
+            <div *ngIf="f2.phone.errors.minlength" >minimum length is 8</div>
         </div>
     </div>
     <div class="form-group">
@@ -158,10 +205,10 @@
     </ng-container>
   </c-modal-body>
   <c-modal-footer>
-    <button [cModalToggle]="addAdmin.id" cButton color="secondary">
+    <button [cModalToggle]="addAdmin.id" cButton color="secondary" id="closeBtn">
       Close
     </button>
-    <button cButton color="primary" type="submit">Save changes</button>
+    <button cButton color="primary" type="submit" id="saveBtn">Save changes</button>
   </c-modal-footer>
 </form>
 </c-modal>
