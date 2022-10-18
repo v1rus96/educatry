@@ -82,7 +82,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return error('Username "' + user.username + '" is already taken')
             }
 
-            if(users.find(x => x.staffID === user.staffID)) {
+            if(user.role === Role.SuperAdmin && users.find(x => x.staffID === user.staffID)) {
                 return error('Staff ID "' + user.staffID + '" already exists!')
             }
 
