@@ -45,7 +45,7 @@
 
 </style>
 <h1>Schools <button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" id="regSchool">Register School</button></h1>
-<h3 *ngIf="schools?.length == 0">There is no schools in the system!</h3>
+<h3 *ngIf="schools?.length == 0">No Schools in the system!</h3>
 <c-accordion *ngFor="let school of schools">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
