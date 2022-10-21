@@ -2,7 +2,8 @@
   <div class="container">
 <h1 style="margin: 0 0 2rem 0;">School Requests & Offers</h1>
 
-<button *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Create request</button>
+<button id="reqBtn1" *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Submit Tutorial Request</button>
+<button id="reqBtn2" *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Submit Resource Request</button>
 <c-accordion *ngFor="let request of requests" disabled>
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
