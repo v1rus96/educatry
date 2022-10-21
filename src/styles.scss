@@ -57,3 +57,18 @@ a { cursor: pointer }
   .container-lg {
     margin-top: 2rem;
   }
+//request.component.html
+#reqBtn1 , #reqBtn2{
+  width: 40%;
+}
+#reqBtn1  , #reqBtn2{
+margin-right: 50px;
+background-color: #ff0000;
+border: none;
+font-family: 'Times New Roman', Times, serif;
+font-weight: bold;
+color: white;
+}
+#reqBtn2{
+background-color: #4499d8;
+}
