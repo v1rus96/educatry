@@ -13,10 +13,11 @@ import { AlertComponent } from './_components';
 import { HomeComponent } from './home';
 import { AdminComponent } from './admin';
 import { RequestComponent } from './request/request.component';
-import { AccordionModule, AlertModule, BadgeModule, ButtonModule, FormModule, GridModule, ModalModule, SharedModule, SidebarModule, TableModule, ToastModule, UtilitiesModule } from '@coreui/angular';
+import { AccordionModule, AlertModule, AvatarModule, BadgeModule, ButtonModule, CardModule, DropdownModule, FormModule, GridModule, HeaderModule, ModalModule, NavModule, SharedModule, SidebarModule, TableModule, ToastModule, UtilitiesModule } from '@coreui/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconModule } from '@coreui/icons-angular';
 import { OfferComponent } from './offers';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 @NgModule({
     imports: [
@@ -36,7 +37,13 @@ import { OfferComponent } from './offers';
         ButtonModule,
         FormModule,
         ToastModule,
-        IconModule
+        IconModule,
+        HeaderModule,
+        NavModule,
+        DropdownModule,
+        AvatarModule,
+        CardModule,
+        NgxMaterialTimepickerModule
     ],
     declarations: [
         AppComponent,

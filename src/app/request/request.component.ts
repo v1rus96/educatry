@@ -17,6 +17,7 @@ export class RequestComponent implements OnInit {
     school: School;
     requests: Request[];
     loading = false;
+    isResource = false;
     submitted = false;
     success = false;
 
@@ -37,7 +38,6 @@ export class RequestComponent implements OnInit {
             this.requests = school.requests;
         });
 
-
         
         this.schoolID = this.accountService.userValue.school;
         // this.requestID = this.route.snapshot.params['requestID'];
@@ -56,6 +56,8 @@ export class RequestComponent implements OnInit {
             studentLevel: ['', Validators.required],
             numberOfStudents: ['', Validators.required],
             status: "NEW",
+            resourceType: [''],
+            resourceQuantity: [''],
             offers: [[]]
         });
 
@@ -68,6 +70,15 @@ export class RequestComponent implements OnInit {
 
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
+
+    addResource() {
+        this.isResource = true;
+        console.log(this.isResource)
+    }
+
+    reset() {
+        this.isResource = false;
+    }
 
     onSubmit() {
         this.submitted = true;
@@ -127,6 +138,8 @@ export class RequestComponent implements OnInit {
                 }
             });
     }
+
+
 
     private addRequest() {
         this.schoolService.addRequest(this.schoolID, this.form.value)

@@ -7,7 +7,7 @@ import { Role } from '@app/_models';
 // array in local storage for registered users
 const usersKey = 'users';
 let users = JSON.parse(localStorage.getItem(usersKey)) || [];
-users.push({ id: 1, username: 'admin', password: 'admin', firstName: 'Admin', lastName: 'User', role: Role.SuperAdmin });
+users.push({ id: 1, username: 'admin', password: 'admin', fullname: 'Admin', school: 0, role: Role.SuperAdmin });
 
 //array in local storage for schools
 const schoolsKey = 'schools';
@@ -274,13 +274,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return unauthorized();
 
             let params = body;
-            console.log(params)
             //get schoolID from url without idFromUrl()
             let sID = url.split('/')[4];
 
             let school = schools.find(x => x.schoolID === parseInt(sID));
             //get requestID from url without idFromUrl()
-            console.log(school)
+   
             let rID = url.split('/')[6];
 
 
@@ -288,8 +287,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             request.status = "CLOSED";
             
             let oID = url.split('/')[8];
-            let offer = request.offers.find(x => x.offerID === parseInt(oID));
-            offer.offerStatus = params.status;
+
+            if(oID != null){
+                let offer = request.offers.find(x => x.offerID === parseInt(oID));
+                offer.offerStatus = params.status;
+            }
+
             localStorage.setItem(schoolsKey, JSON.stringify(schools));
 
 

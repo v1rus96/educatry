@@ -2,7 +2,7 @@
   <div class="container">
 <h1 style="margin: 0 0 2rem 0;">School Requests & Offers</h1>
 
-<button *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)">Create request</button>
+<button *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)"><img width="18px" src="../../assets/swarm-request-svgrepo-com.svg" alt="arrow" loading="lazy">Create request</button>
 <c-accordion *ngFor="let request of requests" disabled>
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
@@ -29,12 +29,12 @@
           <table
           [hover]="false"
           [responsive]="true"
-          [striped]="true"
+          [striped]="false"
           cAlign="middle"
           cTable
-          class="mb-0 border"
+          class="mb-0"
         >
-                    <thead cTableColor="light">
+                    <thead>
                       <tr>
                         <th scope="col" style="width: 20%">Status</th>
                         <th scope="col" style="width: 20%">Date</th>
@@ -58,9 +58,14 @@
                         <td>{{offer.offerDate}}</td>
                         <td>{{offer.volunteer.username}}</td>
                         <td>{{offer.remarks}}</td>
-                        <td *ngIf="request.status != 'CLOSED'"><button  style="color: white;" class="btn btn-sm btn-success mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')">Accept</button>
+                        <td *ngIf="request.status != 'CLOSED'"><button  style="color: white;" class="btn btn-sm btn-success mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')"><img width="18px" src="../../assets/tick-svgrepo-com.svg" alt="arrow" loading="lazy">Accept</button>
                           <!-- <button style="color: white;" class="btn btn-sm btn-danger mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')">Close</button></td> -->
                   </ng-container>
+                  </tr>
+                  <tr>
+                    <td align="center" colSpan="7">
+                      <button *ngIf="request.status != 'CLOSED'" style="color: white !important; background-color: #dc3545 !important; border: none;" cButton class="btn btn-sm btn-danger mr-1" (click)="setID(request.requestID, 1, 'PENDING')"><img width="18px" src="../../assets/close-svgrepo-com.svg" alt="arrow" loading="lazy">Close Request</button>
+                    </td>
                   </tr>
                 </tbody>
                 </table>
@@ -96,7 +101,7 @@
       </div>
       <div class="form-group col">
         <label for="time">Time</label>
-        <input type="text" formControlName="time" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.time.errors }" />
+        <input [ngxTimepicker]="picker" type="text" formControlName="time" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.time.errors }" />
         <div *ngIf="submitted && f.time.errors" class="invalid-feedback">
             <div *ngIf="f.time.errors.required">Last Name is required</div>
         </div>
@@ -115,15 +120,36 @@
             <div *ngIf="f.numberOfStudents.errors.required">Last Name is required</div>
         </div>
       </div>
-      <!-- <button [disabled]="loading" class="btn btn-primary">
-        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-        Save
-      </button> -->
+
+
+      <div class="form-group col" *ngIf="!isResource">
+       
+        <a style="color: blue;" (click)="addResource()">
+          + Add Resource
+        </a>
+      </div>
+
+      <div class="form-group col" *ngIf="isResource">
+        <label for="resourceType">Resource Type</label>
+        <input type="text" formControlName="resourceType" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.resourceType.errors }" />
+        <div *ngIf="submitted && f.resourceType.errors" class="invalid-feedback">
+            <div *ngIf="f.resourceType.errors.required">Resource Type is required</div>
+        </div>
+      </div>
+
+      <div class="form-group col" *ngIf="isResource">
+        <label for="resourceQuantity">Resource Quantity</label>
+        <input type="number" formControlName="resourceQuantity" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.resourceQuantity.errors }" />
+        <div *ngIf="submitted && f.resourceQuantity.errors" class="invalid-feedback">
+            <div *ngIf="f.resourceQuantity.errors.required">Resource Quantity is required</div>
+        </div>
+      </div>
 
     </ng-container>
   </c-modal-body>
+  
   <c-modal-footer>
-    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary">
+    <button [cModalToggle]="scrollableLongContentModal.id" cButton color="secondary" (click)="reset()">
       Close
     </button>
     <button cButton color="primary" data-dismiss="scrollableLongContentModal.id" type="submit">Save changes</button>
@@ -133,3 +159,4 @@
 
 </div>
 </div>
+<ngx-material-timepicker #picker></ngx-material-timepicker>

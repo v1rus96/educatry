@@ -22,7 +22,7 @@ const routes: Routes = [
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] } },
 
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '/offers' }
 ];
 
 @NgModule({

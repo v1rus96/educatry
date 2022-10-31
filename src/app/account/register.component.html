@@ -1,6 +1,9 @@
-﻿<div class="card">
-    <h4 class="card-header">Register As Volunteer</h4>
-    <div class="card-body">
+﻿<c-card id="info" class="u-border u-border--bottom-right">
+    <c-card-body>
+        <h5 cCardTitle id="loginTitle">Register</h5>
+        <h6 cCardSubtitle style="color: #6F8A9E !important;" class="mb-2 text-medium-emphasis">
+            Please enter the information below to register
+          </h6>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="fullname">Fullname</label>
@@ -52,13 +55,13 @@
                     <div *ngIf="f.dateOfBirth.errors.required">Phone is required</div>
                 </div>
             </div>
-            <div class="form-group">
-                <button [disabled]="loading" class="btn btn-primary">
+            <div class="form-group" id="loginFormGroup">
+                <button id="big" [disabled]="loading" class="btn btn-primary">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Register
                 </button>
-             
+                <a routerLink="../login" class="btn btn-link" id="register">Sign In</a>
             </div>
         </form>
-    </div>
-</div>
+    </c-card-body>
+</c-card>

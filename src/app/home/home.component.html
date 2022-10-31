@@ -1,40 +1,52 @@
-﻿<style>
-    button.btn.btn-primary{
-        background-color: #4499d8;
-        border: none;
-        font-family: -webkit-body;
-        font-weight: bold;
-    }
-    button.btn.btn-primary:hover{
-        background-color: #e04644;
-    }
-    h5{
-        color: #e04644;
-        /* font-family: monospace; */
-    }
-    h1{
-        /* font-family: 'Times New Roman', Times, serif; */
-    }
-    #loginBtn{
-        width:20%;
-        background-color: #e04644;
-        border: none;
-        font-weight: bold;
-        margin-top: 5%
-  }
-  #loginBtn:hover{
-    background-color:#4499d8 ;
-  }
-    
-</style>
+﻿
 <div class="p-4">
     <div class="container">
-        <h1>Hi, {{user.fullname}}!</h1>
-        <h5>Welcome To Educatry System</h5>
+        
+
+        <c-container fluid>
+            <h1>Hi, {{user.fullname}}!</h1>
+          <h5>Welcome To Educatry System</h5>
+            <c-row [xs]="1" [lg]="3">
+              <c-col>
+                <c-card id="info" class="u-border u-border--bottom-right">
+                    <c-card-body>
+                        <h5 cCardTitle id="info">Card title</h5>
+                        <p cCardText>
+                        Some quick example text to build on the card title and make up the
+                        bulk of the card content.
+                        </p>
+                    </c-card-body>
+                </c-card>
+              </c-col>
+              <c-col>
+                <c-card id="info" class="u-border u-border--bottom-right">
+                    <c-card-body>
+                        <h5 cCardTitle id="info">Card title</h5>
+                        <p cCardText>
+                        Some quick example text to build on the card title and make up the
+                        bulk of the card content.
+                        </p>
+                    </c-card-body>
+                </c-card>
+              </c-col>
+              <c-col>
+                <c-card id="info" class="u-border u-border--bottom-right">
+                    <c-card-body>
+                        <h5 cCardTitle id="info">Card title</h5>
+                        <p cCardText>
+                        Some quick example text to build on the card title and make up the
+                        bulk of the card content.
+                        </p>
+                    </c-card-body>
+                </c-card>
+              </c-col>
+            </c-row>
+          </c-container>
+        
     
-        <h3 *ngIf="isAdmin">Position: {{user.position}}!</h3>
+        <!-- <h3 *ngIf="isAdmin">Position: {{user.position}}!</h3>
         <h3 *ngIf="isAdmin">School: {{school.name}}!</h3>
 
-        <p><button cButton (click)="logout()" color="primary" style="color: white;">Log out</button></p>       
+        <p><button cButton (click)="logout()" color="primary" style="color: white;">Log out</button></p>        -->
     </div>
 </div>

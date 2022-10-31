@@ -13,9 +13,12 @@ export class HomeComponent {
         this.user = this.accountService.userValue;
         console.log(this.user)
         this.isAdmin = this.user && this.user.role === Role.Admin;
-        this.schoolService.getSchoolById(this.user.school).subscribe(school => {
+        if(this.isAdmin) {
+          this.schoolService.getSchoolById(this.user.school).subscribe(school => {
             this.school = school;
-        });
+            console.log( this.school.name )
+          });
+        }
     }
 
 

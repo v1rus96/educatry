@@ -1,51 +1,9 @@
-﻿<style>
-  h1{
-    margin: 0 0 2rem 0;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: bold;
-  }
-  h3{
-    color:#e04644;
-  }
-  #regSchool{
-    margin-left: 70%;
-    background-color: #e04644;
-    border: none;
-    font-weight: bold;
-  }
-  #regSchool:hover{
-    background-color: #4499d8;
-  }
-  .btn:hover{
-    background-color: #e04644;
-    border: none;
-    font-family: 'Times New Roman', Times, serif;
-  }
-  .btn{
-    background-color: #4499d8;
-    border: none;
-  }
-  #saveBtn {
-    background-color: #e04644;
-  }
-  #saveBtn:hover , #closeBtn:hover{
-    opacity: 60%;
-  }
-  #closeBtn{
-    color: white;
-    background-color: #4499d8;
-  }
-  #schoolErrMsg{
-    margin: 0.5rem;
-    text-align: center;
-    color: #e04644;
-    font-family: emoji;
-  }
-
-
-</style>
-<h1>Schools <button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" id="regSchool">Register School</button></h1>
-<h3 *ngIf="schools?.length == 0">There is no schools in the system!</h3>
+﻿
+<div class="title-button">
+  <h1>Schools </h1>
+<button [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" id="regSchool"><img width="20px" src="../../assets/plus-svgrepo-com.svg" alt="arrow" loading="lazy">Register School</button>
+</div>
+<h3 *ngIf="schools?.length == 0" class="space">There is no schools in the system!</h3>
 <c-accordion *ngFor="let school of schools">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
@@ -67,12 +25,12 @@
           <table
           [hover]="false"
           [responsive]="true"
-          [striped]="true"
+          [striped]="false"
           cAlign="middle"
           cTable
-          class="mb-0 border"
+          class="mb-0"
         >
-                    <thead cTableColor="light">
+                    <thead *ngIf="school.admins?.length != 0">
                       <tr>
                         <th scope="col" style="width: 25%">Username</th>
                         <th scope="col" style="width: 25%">Fullname</th>
@@ -84,7 +42,7 @@
                       </thead>
                       <tbody>
                         <td colSpan="7" *ngIf="school.admins?.length == 0">
-                          <h5 id="schoolErrMsg">No school admin has been assigned yet!</h5>
+                          <h5 id="schoolErrMsg" class="infotext">No school admin has been assigned yet!</h5>
                         </td>
                     <tr *ngFor="let admin of school.admins">
                       <ng-container>
@@ -98,7 +56,7 @@
                   </tr>
                   <tr>
                     <td align="center" colSpan="7">
-                      <button [cModalToggle]="addAdmin.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID)">Add Admin</button>
+                      <button [cModalToggle]="addAdmin.id" cButton size="lg" (click)="setID(school.schoolID)"><img width="20px" src="../../assets/user-svgrepo-com (1).svg" alt="arrow" loading="lazy">Add Admin</button>
                     </td>
                   </tr>
                 </tbody>

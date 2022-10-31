@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 
 import { AccountService, AlertService, SchoolService } from '@app/_services';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { School } from '@app/_models';
+import { School, User } from '@app/_models';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({ templateUrl: 'offers.component.html' })
@@ -19,6 +19,7 @@ export class OfferComponent implements OnInit {
     requestsCount: number;
     countNewReq: number;
     submitted = false;
+    user: User;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -34,6 +35,8 @@ export class OfferComponent implements OnInit {
         this.schoolService.getAllSchools()
             .pipe(first())
             .subscribe(schools => this.schools = schools);
+
+        this.user = this.accountService.userValue;
 
 
         // this.schoolID = this.route.snapshot.params['schoolID'];
@@ -96,6 +99,18 @@ export class OfferComponent implements OnInit {
         return count;
     }
 
+    countPastRequests() {
+        let count = 0;
+        for(let i = 0; i < this.schools.length; i++) {
+            for(let j = 0; j < this.schools[i].requests.length; j++) {
+                if(this.schools[i].requests[j].status == "CLOSED") {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
     //get number of requests for school with status NEW
     countNewRequests(schoolID) {
         let count = 0;
@@ -103,6 +118,22 @@ export class OfferComponent implements OnInit {
             if(this.schools[i].schoolID == schoolID) {
                 for(let j = 0; j < this.schools[i].requests.length; j++) {
                     if(this.schools[i].requests[j].status == "NEW") {
+                        count++;
+                    }
+                }
+            }
+        }
+        console.log(count);
+        return count;
+    }
+
+    //get number of requests for school with status CLOSED
+    countClosedRequests(schoolID) {
+        let count = 0;
+        for(let i = 0; i < this.schools.length; i++) {
+            if(this.schools[i].schoolID == schoolID) {
+                for(let j = 0; j < this.schools[i].requests.length; j++) {
+                    if(this.schools[i].requests[j].status == "CLOSED") {
                         count++;
                     }
                 }
