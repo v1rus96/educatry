@@ -24,8 +24,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/users/register') && method === 'POST':
-                    return register();
+                // case url.endsWith('/users/register') && method === 'POST':
+                //     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
                 //get current user
@@ -37,8 +37,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return updateUser();
                 case url.match(/\/users\/\d+$/) && method === 'DELETE':
                     return deleteUser();
-                case url.endsWith('/schools') && method === 'GET':
-                    return getSchools();
+                // case url.endsWith('/schools') && method === 'GET':
+                //     return getSchools();
                 case url.endsWith('/schools/add') && method === 'POST':
                     return addSchool();
                 case url.match(/\/schools\/\d+$/) && method === 'GET':
@@ -46,8 +46,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 case url.match(/\/schools\/request\/\d+$/) && method === 'POST':
                     return addRequest();
                 //add admin to school
-                case url.match(/\/schools\/admin\/\d+$/) && method === 'POST':
-                    return addAdmin();
+                // case url.match(/\/schools\/admin\/\d+$/) && method === 'POST':
+                //     return addAdmin();
                 //add offer to request as schools/:schoolID/request/:requestID/offer
                 case url.match(/\/schools\/\d+\/request\/\d+\/offer$/) && method === 'POST':
                     return addOffer();

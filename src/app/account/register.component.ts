@@ -29,8 +29,7 @@ export class RegisterComponent implements OnInit {
             phone: ['', Validators.required],
             occupation: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
-            role: Role.User,
-            offers: [[]],
+            role: Role.User
         });
     }
 
@@ -73,7 +72,7 @@ export class RegisterComponent implements OnInit {
                 age--;
             }
             if (age < 18) {
-                this.form.controls.dateOfBirth.setErrors({ 'incorrect': true });
+                this.form.controls.dateOfBirth.setErrors({ 'incorrect': true, 'message': 'You must be 18 years old' });
             }
         }
 
@@ -81,7 +80,7 @@ export class RegisterComponent implements OnInit {
         checkPhone() {
             var phone = this.form.controls.phone.value;
             if (isNaN(phone)) {
-                this.form.controls.phone.setErrors({ 'incorrect': true });
+                this.form.controls.phone.setErrors({ 'incorrect': true, 'message': 'Phone number must be numbers' });
             }
         }
 }

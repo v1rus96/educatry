@@ -33,8 +33,9 @@ export class RequestComponent implements OnInit {
 
 
     ngOnInit() {
-        console.log(this.accountService.userValue);
+        console.log(this.accountService.userValue.school);
         this.schoolService.getSchoolById(this.accountService.userValue.school).subscribe(school => {
+            console.log(school.requests)
             this.school = school;
             this.requests = school.requests;
         });
@@ -148,18 +149,45 @@ export class RequestComponent implements OnInit {
     }
 
     private updateStatus(status: string) {
-        this.schoolService.updateStatus(this.schoolID, this.requestID, this.offerID, status)
+        this.schoolService.updateRequestStatus(this.schoolID, this.requestID, this.offerID, "CLOSED")
             .pipe(first())
             .subscribe({
                 next: () => {
-                    this.alertService.success('Status updated', { keepAfterRouteChange: true });
-                    this.router.navigate(['../'], { relativeTo: this.route });
+
+                    this.updateOfferStatus(status);
+            
                 },
                 error: error => {
                     this.alertService.error(error);
                     this.loading = false;
                 }
             });
+    }
+
+    private updateOfferStatus(status: string) {
+        this.schoolService.updateOfferStatus(this.schoolID, this.requestID, this.offerID, status)
+            .pipe(first())
+            .subscribe({
+                next: () => {
+                    this.alertService.success('Request updated successfully', { keepAfterRouteChange: true });
+                    this.router.navigate(['/request'], { relativeTo: this.route });
+                },
+                error: error => {
+                    this.alertService.error(error);
+                    this.loading = false;
+                }
+            });
+    }
+
+    private mapType(type: string) {
+        switch(type) {
+            case "1":
+                return "Mobile";
+            case "2":
+                return "PC";
+            case "3":
+                return "Networking";
+        }
     }
 
 

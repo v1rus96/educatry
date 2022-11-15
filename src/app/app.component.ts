@@ -18,6 +18,7 @@ export class AppComponent {
 
     constructor(private accountService: AccountService, public iconSet: IconSetService, private schoolService: SchoolService) {
         this.accountService.user.subscribe(x => this.user = x)
+        console.log(this.user)
         if(this.user && this.user.role === Role.Admin) {
           this.schoolService.getSchoolById(this.user.school).subscribe(school => {
             this.school = school;

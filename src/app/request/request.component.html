@@ -2,38 +2,38 @@
   <div class="container">
 <h1 style="margin: 0 0 2rem 0;">School Requests & Offers</h1>
 
-<button *ngIf="requests.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.schoolID, request.requestID)"><img width="18px" src="../../assets/swarm-request-svgrepo-com.svg" alt="arrow" loading="lazy">Create request</button>
+<button *ngIf="requests?.length >= 0" [cModalToggle]="scrollableLongContentModal.id" cButton size="lg" (click)="setID(school.id, request._id)"><img width="18px" src="../../assets/swarm-request-svgrepo-com.svg" alt="arrow" loading="lazy">Create request</button>
 <c-accordion *ngFor="let request of requests" disabled>
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
           <div class="stats-2" *ngIf="request.date != ''">
             <h5 style="margin: 0 1rem;"><c-badge color="warning"><img width="18px" src="../../assets/person-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5> 
-            <h5 style="margin: 0 1rem;"><c-badge color="dark">{{ request.requestID }}</c-badge></h5> 
+            <h5 style="margin: 0 1rem;"><c-badge color="dark" class="icons-flex">{{ request.requestID }}</c-badge></h5> 
             <h5 style="margin: 0 1rem">
               <c-badge *ngIf="request.status == 'NEW'" color="success">{{ request.status }}</c-badge>
               <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{ request.status }}</c-badge>
             </h5> 
-            <h5 style="margin: 0 1rem;"><c-badge color="dark"><img width="18px" src="../../assets/calendar-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.date }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"><img width="18px" src="../../assets/clock-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.time }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"><img width="18px" src="../../assets/volume-level-indicator-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.studentLevel }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"><img width="18px" src="../../assets/graduate-boy-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.numberOfStudents }}</c-badge></h5> 
+            <h5 style="margin: 0 1rem;"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/calendar-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.date }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/clock-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.time }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/volume-level-indicator-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.studentLevel }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/graduate-boy-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.numberOfStudents }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
             <c-badge *ngIf="request.offers.length == 0" color="light" shape="rounded-pill">{{ request.offers.length }}</c-badge>
             <c-badge *ngIf="request.offers.length > 0" color="success" shape="rounded-pill">{{ request.offers.length }}</c-badge>
           </h5> 
           </div>
-          <div class="stats-2" *ngIf="request.resourceType != ''">
+          <div class="stats-2" *ngIf="request?.resourceType != ''">
             <h5 style="margin: 0 1rem;"><c-badge color="primary"><img width="18px" src="../../assets/pc-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5> 
             <h5 style="margin: 0 1rem;"><c-badge color="dark">{{ request.requestID }}</c-badge></h5> 
             <h5 style="margin: 0 1rem">
               <c-badge *ngIf="request.status == 'NEW'" color="success">{{ request.status }}</c-badge>
               <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{ request.status }}</c-badge>
             </h5> 
-            <h5 style="margin: 0 1rem;"><c-badge color="dark"><img width="18px" src="../../assets/help-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.resourceType }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"><img width="18px" src="../../assets/number-sign-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request.resourceQuantity }}</c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"></c-badge></h5> 
-          <h5 style="margin: 0 1rem"><c-badge color="dark"></c-badge></h5> 
+            <h5 style="margin: 0 1rem;"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/help-svgrepo-com.svg" alt="arrow" loading="lazy">{{ mapType(request?.resourceType) }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"><img width="18px" src="../../assets/number-sign-svgrepo-com.svg" alt="arrow" loading="lazy">{{ request?.resourceQuantity }}</c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"></c-badge></h5> 
+          <h5 style="margin: 0 1rem"><c-badge color="dark" class="icons-flex"></c-badge></h5> 
           <h5 style="margin: 0 1rem">
             <c-badge *ngIf="request.offers.length == 0" color="light" shape="rounded-pill">{{ request.offers.length }}</c-badge>
             <c-badge *ngIf="request.offers.length > 0" color="success" shape="rounded-pill">{{ request.offers.length }}</c-badge>
@@ -73,15 +73,15 @@
                           <c-badge *ngIf="offer.offerStatus == 'CLOSED'" color="danger">{{offer.offerStatus}}</c-badge>
                         </td>
                         <td>{{offer.offerDate}}</td>
-                        <td>{{offer.volunteer.username}}</td>
+                        <td>{{offer.volunteer.fullname}}</td>
                         <td>{{offer.remarks}}</td>
-                        <td *ngIf="request.status != 'CLOSED'"><button  style="color: white;" class="btn btn-sm btn-success mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')"><img width="18px" src="../../assets/tick-svgrepo-com.svg" alt="arrow" loading="lazy">Accept</button>
+                        <td *ngIf="request.status != 'CLOSED'"><button  style="color: white;" class="btn btn-sm btn-success mr-1" cButton (click)="setID(request._id, offer._id, 'ACCEPTED')"><img width="18px" src="../../assets/tick-svgrepo-com.svg" alt="arrow" loading="lazy">Accept</button>
                           <!-- <button style="color: white;" class="btn btn-sm btn-danger mr-1" cButton (click)="setID(request.requestID, offer.offerID, 'ACCEPTED')">Close</button></td> -->
                   </ng-container>
                   </tr>
                   <tr>
                     <td align="center" colSpan="7">
-                      <button *ngIf="request.status != 'CLOSED'" style="color: white !important; background-color: #dc3545 !important; border: none;" cButton class="btn btn-sm btn-danger mr-1" (click)="setID(request.requestID, 1, 'PENDING')"><img width="18px" src="../../assets/close-svgrepo-com.svg" alt="arrow" loading="lazy">Close Request</button>
+                      <button *ngIf="request.status != 'CLOSED'" style="color: white !important; background-color: #dc3545 !important; border: none;" cButton class="btn btn-sm btn-danger mr-1" (click)="setID(request._id, 1, 'PENDING')"><img width="18px" src="../../assets/close-svgrepo-com.svg" alt="arrow" loading="lazy">Close Request</button>
                     </td>
                   </tr>
                 </tbody>

@@ -35,6 +35,8 @@ export class ListComponent implements OnInit {
         this.schoolService.getAllSchools()
             .pipe(first())
             .subscribe(schools => this.schools = schools);
+        
+            console.log(this.schools)
 
 
         // this.schoolID = this.route.snapshot.params['schoolID'];
@@ -60,8 +62,6 @@ export class ListComponent implements OnInit {
             name: ['', Validators.required],
             address: ['', Validators.required],
             city: ['', Validators.required],
-            requests: [[]],
-            admins: [[]]
         });
 
         console.log(this.schoolID)
@@ -74,7 +74,7 @@ export class ListComponent implements OnInit {
             staffID: ['', Validators.required],
             position: ['', Validators.required],
             role: [Role.Admin],
-            school: [this.schoolID]
+            // school: [this.schoolID]
         });
 
 
@@ -137,7 +137,7 @@ export class ListComponent implements OnInit {
         //toggle modal
 
         this.form2.patchValue({school: this.schoolID});
-        this.createUser();
+        this.addAdmin();
         // } else {
         //     this.updateUser();
         // }
@@ -168,8 +168,8 @@ export class ListComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    // this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
-                    // this.router.navigate(['/schools'], { relativeTo: this.route });
+                    this.alertService.success('Request added successfully', { keepAfterRouteChange: true });
+                    this.router.navigate(['/schools'], { relativeTo: this.route });
                 },
                 error: error => {
                     this.alertService.error(error);
@@ -178,19 +178,19 @@ export class ListComponent implements OnInit {
             });
     }
 
-    private createUser() {
-        this.accountService.register(this.form2.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Admin added successfully', { keepAfterRouteChange: true });
-                    this.addAdmin();
-                    this.router.navigate(['../'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                }
-            });
-    }
+    // private createUser() {
+    //     this.accountService.register(this.form2.value)
+    //         .pipe(first())
+    //         .subscribe({
+    //             next: () => {
+    //                 this.alertService.success('Admin added successfully', { keepAfterRouteChange: true });
+    //                 this.addAdmin();
+    //                 this.router.navigate(['../'], { relativeTo: this.route });
+    //             },
+    //             error: error => {
+    //                 this.alertService.error(error);
+    //                 this.loading = false;
+    //             }
+    //         });
+    // }
 }

@@ -51,8 +51,7 @@ export class OfferComponent implements OnInit {
 
         this.form = this.formBuilder.group({
             remarks: ['', Validators.required],
-            volunteer: this.accountService.userValue,
-            request: [this.requestID]
+            volunteer: [this.user.id],
         });
 
         if (!this.isAddMode) {
@@ -64,6 +63,17 @@ export class OfferComponent implements OnInit {
 
     // convenience getter for easy access to form fields
     get f() { return this.form.controls; }
+
+    private mapType(type: string) {
+        switch(type) {
+            case "1":
+                return "Mobile";
+            case "2":
+                return "PC";
+            case "3":
+                return "Networking";
+        }
+    }
 
     onSubmit() {
         this.submitted = true;
@@ -89,6 +99,7 @@ export class OfferComponent implements OnInit {
 
     countRequests() {
         let count = 0;
+        console.log(this.schools.length)
         for(let i = 0; i < this.schools.length; i++) {
             for(let j = 0; j < this.schools[i].requests.length; j++) {
                 if(this.schools[i].requests[j].status != "CLOSED") {
@@ -96,6 +107,7 @@ export class OfferComponent implements OnInit {
                 }
             }
         }
+        console.log(count);
         return count;
     }
 
@@ -108,6 +120,7 @@ export class OfferComponent implements OnInit {
                 }
             }
         }
+        console.log(count);
         return count;
     }
 
@@ -115,7 +128,7 @@ export class OfferComponent implements OnInit {
     countNewRequests(schoolID) {
         let count = 0;
         for(let i = 0; i < this.schools.length; i++) {
-            if(this.schools[i].schoolID == schoolID) {
+            if(this.schools[i].id == schoolID) {
                 for(let j = 0; j < this.schools[i].requests.length; j++) {
                     if(this.schools[i].requests[j].status == "NEW") {
                         count++;
@@ -131,7 +144,7 @@ export class OfferComponent implements OnInit {
     countClosedRequests(schoolID) {
         let count = 0;
         for(let i = 0; i < this.schools.length; i++) {
-            if(this.schools[i].schoolID == schoolID) {
+            if(this.schools[i].id == schoolID) {
                 for(let j = 0; j < this.schools[i].requests.length; j++) {
                     if(this.schools[i].requests[j].status == "CLOSED") {
                         count++;

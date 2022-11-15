@@ -16,7 +16,8 @@ export class SchoolService {
     ) { }
 
     addSchool(school: School) {
-        return this.http.post(`${environment.apiUrl}/schools/add`, school);
+        console.log(school);
+        return this.http.post(`${environment.apiUrl}/schools`, school);
     }
 
     getAllSchools() {
@@ -28,7 +29,7 @@ export class SchoolService {
     }
 
     addRequest(id: string, request: Request) {
-        return this.http.post(`${environment.apiUrl}/schools/request/${id}`, request);
+        return this.http.post(`${environment.apiUrl}/requests/${id}/request`, request);
     }
 
     getRequestById(schoolID: string, requestID: string) {
@@ -36,15 +37,22 @@ export class SchoolService {
     }
 
     addAdmin(id: string, admin: User) {
-        return this.http.post(`${environment.apiUrl}/schools/admin/${id}`, { admin });
+        console.log(admin);
+        return this.http.post(`${environment.apiUrl}/users/${id}/admin`, admin);
     }
 
-    addOffer(schoolID: string, requestID: string, offer: Offer) {
-        return this.http.post(`${environment.apiUrl}/schools/${schoolID}/request/${requestID}/offer`, offer);
+    addOffer(schoolID: string, id: string, offer: Offer) {
+        return this.http.post(`${environment.apiUrl}/offers/${id}/offer`, offer);
     }
 
-    updateStatus(schoolID: string, requestID: string, offerID: string, status: string) {
+    updateRequestStatus(schoolID: string, requestID: string, offerID: string, status: string) {
         console.log(schoolID, requestID, offerID, status);
-        return this.http.post(`${environment.apiUrl}/schools/${schoolID}/request/${requestID}/offer/${offerID}`, { status });
+        this.updateOfferStatus(schoolID, requestID, offerID, status);
+        return this.http.put(`${environment.apiUrl}/requests/${requestID}`, { status });
+    }
+
+    updateOfferStatus(schoolID: string, requestID: string, offerID: string, offerStatus: string) {
+        console.log(schoolID, requestID, offerID);
+        return this.http.put(`${environment.apiUrl}/offers/${offerID}`, { offerStatus });
     }
 }

@@ -4,7 +4,7 @@
 <h1 id="reqTitle">Available Requests</h1>
 <h3 *ngIf="countRequests() == 0" id="reqErrMsg" class="space">No requests have been made yet!</h3>
 <div *ngFor="let school of schools">
-<c-accordion *ngIf="countNewRequests(school.schoolID) != 0">
+<c-accordion *ngIf="countNewRequests(school.id) != 0">
     <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
       <ng-template cTemplateId="accordionHeaderTemplate">
         <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
@@ -14,15 +14,61 @@
           <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
           <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
           <h5 style="margin: 0 1rem">
-            <c-badge *ngIf="countNewRequests(school.schoolID) == 0" color="light" shape="rounded-pill">{{ countNewRequests(school.schoolID) }}</c-badge>
-            <c-badge *ngIf="countNewRequests(school.schoolID) > 0" color="success" shape="rounded-pill">{{ countNewRequests(school.schoolID) }}</c-badge>
+            <c-badge *ngIf="countNewRequests(school.id) == 0" color="light" shape="rounded-pill">{{ countNewRequests(school.id) }}</c-badge>
+            <c-badge *ngIf="countNewRequests(school.id) > 0" color="success" shape="rounded-pill">{{ countNewRequests(school.id) }}</c-badge>
           </h5> 
           </div>
         </button>
       </ng-template>
       <ng-template cTemplateId="accordionBodyTemplate">
         <div class="accordion-body" style="padding: 0;">
+          <h5 style="margin: 0"><c-badge color="warning" style="width: 100%; border-radius: 0;"><img width="18px" src="../../assets/person-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5>
           <table
+          [hover]="false"
+          [responsive]="true"
+          [striped]="false"
+          cAlign="middle"
+          cTable
+          class="mb-0"
+        >
+                    <thead >
+                      <tr >
+                        <th scope="col" style="width: 10%">Request ID</th>
+                        <th scope="col" style="width: 15%">Date</th>
+                        <th scope="col" style="width: 15%">Time</th>
+                        <th scope="col" style="width: 20%">Student Level</th>
+                        <th scope="col" style="width: 10%">#</th>
+                        <th scope="col" style="width: 15%">Status</th>
+                        <th scope="col" style="width: 15%">Action</th>
+                      </tr>
+                    
+                      </thead>
+                      <tbody>
+                        <td colSpan="7" *ngIf="school.requests.length == 0">
+                          <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                        </td>
+                   
+                    <tr *ngFor="let request of school.requests" >
+                      <ng-container *ngIf="request.status !='CLOSED' && request.date != ''">
+                        <td>{{request.requestID}}</td>
+                        <td>{{request.date}}</td>
+                        <td>{{request.time}}</td>
+                        <td>{{request.studentLevel}}</td>
+                        <td>{{request.numberOfStudents}}</td>
+                        <td>
+                          <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
+                            <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
+                        </td>
+                        <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.id, request._id)"><img width="18px" src="../../assets/hand-svgrepo-com.svg" alt="arrow" loading="lazy">Offer</button></td>
+                  </ng-container >
+        
+                  </tr>
+  
+                </tbody>
+                </table>
+
+                <h5 style="margin: 0"><c-badge color="primary" style="width: 100%; border-radius: 0;"><img width="18px" src="../../assets/pc-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5> 
+                <table
           [hover]="false"
           [responsive]="true"
           [striped]="false"
@@ -33,32 +79,28 @@
                     <thead >
                       <tr>
                         <th scope="col" style="width: 10%">Request ID</th>
-                        <th scope="col" style="width: 15%">Date</th>
-                        <th scope="col" style="width: 15%">Time</th>
-                        <th scope="col" style="width: 20%">Student Level</th>
-                        <th scope="col" style="width: 10%">#</th>
+                        <th scope="col" style="width: 30%">Resource Type</th>
+                        <th scope="col" style="width: 30%">Quantity</th>
                         <th scope="col" style="width: 15%">Status</th>
                         <th scope="col" style="width: 15%">Action</th>
                       </tr>
                       </thead>
                       <tbody>
                         <td colSpan="7" *ngIf="school.requests.length == 0">
-                          <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                          <h5 style="margin: 0.5rem; text-align: center;" >There is no resource requests for this school!</h5>
                         </td>
                    
                     <tr *ngFor="let request of school.requests" >
-                      <ng-container *ngIf="request.status !='CLOSED'">
-                        <td>{{request.requestID}}</td>
-                        <td>{{request.date}}</td>
-                        <td>{{request.time}}</td>
-                        <td>{{request.studentLevel}}</td>
-                        <td>{{request.numberOfStudents}}</td>
-                        <td>
-                          <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
-                            <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
-                        </td>
-                        <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.schoolID, request.requestID)"><img width="18px" src="../../assets/hand-svgrepo-com.svg" alt="arrow" loading="lazy">Offer</button></td>
-                  </ng-container >
+                  <ng-container *ngIf="request.status !='CLOSED' && request?.resourceType != ''">
+                    <td>{{request.requestID}}</td>
+                    <td>{{mapType(request.resourceType)}}</td>
+                    <td>{{request.resourceQuantity}}</td>
+                    <td>
+                      <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
+                        <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
+                    </td>
+                    <td><button [cModalToggle]="scrollableLongContentModal.id" class="btn btn-sm btn-primary mr-1" cButton (click)="setID(school.id, request._id)"><img width="18px" src="../../assets/hand-svgrepo-com.svg" alt="arrow" loading="lazy">Offer</button></td>
+              </ng-container >
                   </tr>
   
                 </tbody>
@@ -75,7 +117,7 @@
 <h1 id="reqTitle">Past Requests</h1>
 <h3 *ngIf="countPastRequests() == 0" id="reqErrMsg" class="space">No requests have been made yet!</h3>
 <div *ngFor="let school of schools">
-  <c-accordion *ngIf="countClosedRequests(school.schoolID) != 0">
+  <c-accordion *ngIf="countClosedRequests(school.id) != 0">
       <c-accordion-item style="margin: 1rem 0;" #item0="cAccordionItem" [visible]="false">
         <ng-template cTemplateId="accordionHeaderTemplate">
           <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
@@ -85,15 +127,59 @@
             <h5 style="margin: 0 1rem"><c-badge color="dark">Address: {{ school.address }}</c-badge></h5> 
             <h5 style="margin: 0 1rem"><c-badge color="dark">City: {{ school.city }}</c-badge></h5> 
             <h5 style="margin: 0 1rem">
-              <c-badge *ngIf="countClosedRequests(school.schoolID) == 0" color="light" shape="rounded-pill">{{ countClosedRequests(school.schoolID) }}</c-badge>
-              <c-badge *ngIf="countClosedRequests(school.schoolID) > 0" color="success" shape="rounded-pill">{{ countClosedRequests(school.schoolID) }}</c-badge>
+              <c-badge *ngIf="countClosedRequests(school.id) == 0" color="light" shape="rounded-pill">{{ countClosedRequests(school.id) }}</c-badge>
+              <c-badge *ngIf="countClosedRequests(school.id) > 0" color="success" shape="rounded-pill">{{ countClosedRequests(school.id) }}</c-badge>
             </h5> 
             </div>
           </button>
         </ng-template>
         <ng-template cTemplateId="accordionBodyTemplate">
           <div class="accordion-body" style="padding: 0;">
+            <h5 style="margin: 0"><c-badge color="warning" style="width: 100%; border-radius: 0;"><img width="18px" src="../../assets/person-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5>
             <table
+            [hover]="false"
+            [responsive]="true"
+            [striped]="false"
+            cAlign="middle"
+            cTable
+            class="mb-0"
+          >
+                      <thead >
+                        <tr >
+                          <th scope="col" style="width: 10%">Request ID</th>
+                          <th scope="col" style="width: 15%">Date</th>
+                          <th scope="col" style="width: 15%">Time</th>
+                          <th scope="col" style="width: 20%">Student Level</th>
+                          <th scope="col" style="width: 10%">#</th>
+                          <th scope="col" style="width: 30%">Status</th>
+                        </tr>
+                      
+                        </thead>
+                        <tbody>
+                          <td colSpan="7" *ngIf="school.requests.length == 0">
+                            <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                          </td>
+                     
+                      <tr *ngFor="let request of school.requests" >
+                        <ng-container *ngIf="request.status == 'CLOSED' && request.date != ''">
+                          <td>{{request.requestID}}</td>
+                          <td>{{request.date}}</td>
+                          <td>{{request.time}}</td>
+                          <td>{{request.studentLevel}}</td>
+                          <td>{{request.numberOfStudents}}</td>
+                          <td>
+                            <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
+                              <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
+                          </td>
+                    </ng-container >
+          
+                    </tr>
+    
+                  </tbody>
+                  </table>
+  
+                  <h5 style="margin: 0"><c-badge color="primary" style="width: 100%; border-radius: 0;"><img width="18px" src="../../assets/pc-svgrepo-com.svg" alt="arrow" loading="lazy"></c-badge></h5> 
+                  <table
             [hover]="false"
             [responsive]="true"
             [striped]="false"
@@ -104,31 +190,26 @@
                       <thead >
                         <tr>
                           <th scope="col" style="width: 10%">Request ID</th>
-                          <th scope="col" style="width: 15%">Date</th>
-                          <th scope="col" style="width: 15%">Time</th>
-                          <th scope="col" style="width: 20%">Student Level</th>
-                          <th scope="col" style="width: 10%">#</th>
-                          <th scope="col" style="width: 15%">Status</th>
-      
+                          <th scope="col" style="width: 30%">Resource Type</th>
+                          <th scope="col" style="width: 30%">Quantity</th>
+                          <th scope="col" style="width: 30%">Status</th>
                         </tr>
                         </thead>
                         <tbody>
                           <td colSpan="7" *ngIf="school.requests.length == 0">
-                            <h5 style="margin: 0.5rem; text-align: center;" >There is no requests for this school!</h5>
+                            <h5 style="margin: 0.5rem; text-align: center;" >There is no resource requests for this school!</h5>
                           </td>
                      
                       <tr *ngFor="let request of school.requests" >
-                        <ng-container >
-                          <td>{{request.requestID}}</td>
-                          <td>{{request.date}}</td>
-                          <td>{{request.time}}</td>
-                          <td>{{request.studentLevel}}</td>
-                          <td>{{request.numberOfStudents}}</td>
-                          <td>
-                            <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
-                            <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
-                          </td>
-                    </ng-container >
+                    <ng-container *ngIf="request.status == 'CLOSED' && request?.resourceType != ''">
+                      <td>{{request.requestID}}</td>
+                      <td>{{mapType(request.resourceType)}}</td>
+                      <td>{{request.resourceQuantity}}</td>
+                      <td>
+                        <c-badge *ngIf="request.status == 'NEW'" color="success">{{request.status}}</c-badge>
+                          <c-badge *ngIf="request.status == 'CLOSED'" color="danger">{{request.status}}</c-badge>
+                      </td>
+                </ng-container >
                     </tr>
     
                   </tbody>

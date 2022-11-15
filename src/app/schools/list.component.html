@@ -32,11 +32,12 @@
         >
                     <thead *ngIf="school.admins?.length != 0">
                       <tr>
-                        <th scope="col" style="width: 25%">Username</th>
-                        <th scope="col" style="width: 25%">Fullname</th>
-                        <th scope="col" style="width: 25%">Email</th>
-                        <th scope="col" style="width: 25%">Phone</th>
-                        <th scope="col" style="width: 25%">Position</th>
+                        <th scope="col" >StaffID</th>
+                        <th scope="col" >Username</th>
+                        <th scope="col" >Fullname</th>
+                        <th scope="col" >Email</th>
+                        <th scope="col" >Phone</th>
+                        <th scope="col" >Position</th>
                         <!-- <th scope="col" style="width: 15%">Action</th> -->
                       </tr>
                       </thead>
@@ -46,6 +47,7 @@
                         </td>
                     <tr *ngFor="let admin of school.admins">
                       <ng-container>
+                        <td>{{admin.staffID}}</td>
                         <td>{{admin.username}}</td>
                         <td>{{admin.fullname}}</td>
                         <td>{{admin.email}}</td>
@@ -56,7 +58,7 @@
                   </tr>
                   <tr>
                     <td align="center" colSpan="7">
-                      <button [cModalToggle]="addAdmin.id" cButton size="lg" (click)="setID(school.schoolID)"><img width="20px" src="../../assets/user-svgrepo-com (1).svg" alt="arrow" loading="lazy">Add Admin</button>
+                      <button [cModalToggle]="addAdmin.id" cButton size="lg" (click)="setID(school.id)"><img width="20px" src="../../assets/user-svgrepo-com (1).svg" alt="arrow" loading="lazy">Add Admin</button>
                     </td>
                   </tr>
                 </tbody>

@@ -1,7 +1,7 @@
 import { Offer } from "./offer";
 
 export class Request {
-    requestID: string;
+    id: string;
     description: string;
     date: string;
     time: string;
